@@ -1,0 +1,107 @@
+
+.vc__table-container {
+    &.borderd {
+        .vc__table {
+            border: 1px solid #d8d6de;
+            border-bottom: none;
+            caption {
+                border-bottom: 1px solid #d8d6de;
+                border-top: none;
+            }
+            .vc__table__tr{
+                td, th {
+                    border-bottom: 1px solid #d8d6de;
+                }
+            }
+        }
+    }
+    &.striped {
+        .vc__table {
+            >.vc__table__tbody {
+                >.vc__tbody__tr:nth-of-type(2n+1) {
+                    background: #efefef;
+                }
+            }   
+        }
+    }
+    .vc__table {
+        background: #fff;
+        width: 100%;
+        .vc__table {
+            background: #f9f9f9;
+        }
+        caption {
+            caption-side: bottom;
+            padding: 10px;
+            text-align: center;
+        }
+        .vc__table__thead {
+            .vc__thead__tr {
+                
+            }
+        }
+        .vc__table__tbody {
+            .vc__tbody__tr {
+                text-align: center;
+            }
+        }
+        >.vc__table__tbody {
+            >.vc__tbody__tr {
+                cursor: pointer;
+            }
+        }
+        .vc__table__tr {
+            td, th {
+                padding: 10px;
+            }
+            .colapse-icon{
+                border-right: 1px solid #d8d6de;
+                width: 26px;
+                position: relative;
+                .icon {
+                    transition: all .4s linear;
+                    position: absolute;
+                    transform-origin: 50% 50%;
+                    height: 100%;
+                    top: 0;
+                    width: 100%;
+                    display: flex;
+                    vertical-align: middle;
+                    left: 0;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .icon.colapsed {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+    [dir="ltr"] .vc__table,
+    .vc__table {
+        .vc__table__thead {
+            .vc__thead__tr {
+                text-align: left;
+            }
+        }
+    }
+    [dir="rtl"] {
+        .vc__table {
+            .vc__table__thead {
+                .vc__thead__tr {
+                    text-align: right;
+                }
+            }
+        }   
+    }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all .4s linear;
+}
+.slide-enter, .slide-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+    transform: translateY(-100px);
+    opacity: 0;
+}
