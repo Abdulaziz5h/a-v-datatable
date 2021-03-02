@@ -4,9 +4,11 @@
             label="label"
             align="center"
             :headers="header"
-            colapsed
-            :childrenHeader="{
+            :colapseOptions="{
                 enable: true,
+                childrenLabel: 'children',
+                enableCustomHeadre: true,
+                customHeaderLabel: 'label',
                 header: [
                     {
                         label: 'اسم الوحدة',
@@ -21,6 +23,11 @@
                         value: 'price'
                     }
                 ]
+            }"
+            :value="selected"
+            :selectOptions="{
+                enable: true,
+                label: 'selected'
             }"
             :items="items"
             borderd
@@ -38,6 +45,7 @@ export default {
     },
     data() {
         return {
+            selected: [],
             header: [
                 {
                     label: "اسم المادة",
