@@ -1,75 +1,42 @@
 <template>
-    <div class="vc__table-container" :class="[{ borderd: !!borderd }]">
+    <div class="vc__table-container">
         <table
             class="vc__table"
-            :class="[tableClass]"
             border="0"
             cellspacing="0"
             cellpadding="0"
         >
             <thead class="vc__table__thead">
                 <slot name="header">
-                    <vue-table-header-row :row="headers.rowItem" :label="headers.label" :value="headers.value">
-                        <template v-for="th in headers.rowItem" :slot="'header-th.' + th[headers.value]">
-                            <slot :name="'header-th.' + th[headers.value]" :th="th[headers.label]"></slot>
-                        </template>
+                    <vue-table-header-row :row="header.rowItem" :label="header.label" :value="header.value">
                         <template slot="header-th" slot-scope="{th}">
                             <slot name="header-th" :th="th"></slot>
+                        </template>
+                        <template v-for="th in header.rowItem" :slot="'header-th.' + th[header.value]">
+                            <slot :name="'header-th.' + th[header.value]" :th="th" :label="th[header.label]"></slot>
                         </template>
                     </vue-table-header-row>
                 </slot>
             </thead>
-            <!-- <transition name="slide">
-                <caption v-if="!rows.length">
+            <transition name="slide">
+                <caption v-if="!items.length">
                     لا يوجد بيانات
                 </caption>
                 <tbody v-else class="vc__table__tbody">
                     <slot name="body">
-                        <template v-for="(tr, index) in rows">
-                            <tr
-                                class="vc__table__tr vc__tbody__tr"
-                                :class="[theadRowClass]"
-                                :style="[vc__align]"
-                                :key="'tr_' + index"
-                                :ref="'tr-' + index"
-                            >
-                                <td
-                                    v-if="selectOptions.enable"
-                                    class="selection"
-                                >
-                                    <input
-                                        v-if="tr[childrenLabel]"
-                                        type="checkbox"
-                                        :checked="tr[selectOptions.label]"
-                                        @change="selectChange(tr)"
-                                    />
-                                </td>
-                                <td
-                                    @click="toggleChildren(index)"
-                                    v-for="(th, i) in headers"
-                                    :key="'td_' + i"
-                                >
-                                    {{ tr[th.value] }}
-                                </td>
-                                <td
-                                    @click="toggleChildren(index)"
-                                    v-if="collapseOptions.enable"
-                                    class="colapse-icon"
-                                >
-                                    <span
-                                        class="icon"
-                                        :class="{ colapsed: tr.isOpen }"
-                                    >
-                                        <slot name="colapse-icon">
-                                            ^
-                                        </slot>
-                                    </span>
-                                </td>
-                            </tr>
+                        <template v-for="(item, index) in items">
+                            <vue-table-body-row :key="index" :item="item" :header="header">
+                                <template slot="row-td" slot-scope="{value}">
+                                    <slot name="row-td" :row="item" :value="value"></slot>
+                                </template>
+                                <template v-for="th in header.rowItem" :slot="'row-td.' + th[header.value]">
+                                    <slot :name="'row-td.' + th[header.value]" :row="item" :td="item[th[header.value]]" :value="th[header.value]"></slot>
+                                </template>
+                            </vue-table-body-row>
                         </template>
                     </slot>
                 </tbody>
-            </transition> -->
+            </transition>
             <slot name="footer"></slot>
         </table>
     </div>
@@ -77,19 +44,20 @@
 <script>
 // import vueColabseChaildTable from "./vue-colabse-chaild-table";
 import vueTableHeaderRow from "./vue-table-components/vue-table-header-row.vue";
-// todo: link attr striped
+import vueTableBodyRow from "./vue-table-components/vue-table-body-row.vue";
+
 export default {
     components: {
         vueTableHeaderRow,
+        vueTableBodyRow,
         // vueColabseChaildTable
     },
     data: () => ({
         selectAll: false
     }),
     props: {
-        
         // table header row
-        headers: {
+        header: {
             type: Object,
             required: true,
             default() {
@@ -100,15 +68,19 @@ export default {
                 }
             }
         },
-        label: {
-            type: String,
-            required: true
-        },
+        
         // table body rows
         items: {
             type: Array,
-            required: true
+            required: true,
         },
+
+
+
+
+        // Collapse Options
+        collapseOptions: Object,
+
         value: {
             type: Array
         },
@@ -120,23 +92,13 @@ export default {
         theadRowClass: Array,
         tbodyRowClass: Array,
         borderd: Boolean,
-
-        
-        // Collapse Options
-        collapseOptions: Object,
-
+        striped: Boolean,
         // Select Options
         selectOptions: Object,
 
         
     },
     computed: {
-        rows: function() {
-            return this.items.filter(item => {
-                item = Object.assign({}, item, { isOpen: false });
-                return item;
-            });
-        },
         vc__align: function() {
             return !this.align ? "" : { "text-align": this.align };
         },
