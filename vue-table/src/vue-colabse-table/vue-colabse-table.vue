@@ -9,28 +9,17 @@
         >
             <thead class="vc__table__thead">
                 <slot name="header">
-                    <tr
-                        class="vc__table__tr vc__thead__tr"
-                        :class="[theadRowClass]"
-                        :style="[vc__align]"
-                    >
-                        <th
-                            v-if="selectOptions.enable && !!rows.length"
-                            class="selection"
-                        >
-                            <input type="checkbox" v-model="selectAll" />
-                        </th>
-                        <th v-for="(th, index) in headers" :key="'th_' + index">
-                            {{ th[label] }}
-                        </th>
-                        <td
-                            v-if="colapseOptions.enable"
-                            class="colapse-icon"
-                        ></td>
-                    </tr>
+                    <vue-table-header-row :row="headers.rowItem" :label="headers.label" :value="headers.value">
+                        <template v-for="th in headers.rowItem" :slot="'header-th.' + th[headers.value]">
+                            <slot :name="'header-th.' + th[headers.value]" :th="th[headers.label]"></slot>
+                        </template>
+                        <template slot="header-th" slot-scope="{th}">
+                            <slot name="header-th" :th="th"></slot>
+                        </template>
+                    </vue-table-header-row>
                 </slot>
             </thead>
-            <transition name="slide">
+            <!-- <transition name="slide">
                 <caption v-if="!rows.length">
                     لا يوجد بيانات
                 </caption>
@@ -64,7 +53,7 @@
                                 </td>
                                 <td
                                     @click="toggleChildren(index)"
-                                    v-if="colapseOptions.enable"
+                                    v-if="collapseOptions.enable"
                                     class="colapse-icon"
                                 >
                                     <span
@@ -77,61 +66,39 @@
                                     </span>
                                 </td>
                             </tr>
-                            <vueColabseChaildTable
-                                v-if="colapseOptions.enable"
-                                :key="'sub_table_' + index"
-                                :label="
-                                    !colapseOptions.customHeaderLabel
-                                        ? label
-                                        : colapseOptions.customHeaderLabel
-                                "
-                                :open="tr.isOpen"
-                                :selectOptions="selectOptions"
-                                :mainTableLength="rows.length"
-                                :align="vc__align"
-                                :childrenLabel="childrenLabel"
-                                @selectChange="select"
-                                :isHeader="colapseOptions.enableCustomHeadre"
-                                :headers="
-                                    !!(
-                                        !!colapseOptions &&
-                                        !!colapseOptions.header &&
-                                        colapseOptions.header.length
-                                    )
-                                        ? colapseOptions.header
-                                        : headers
-                                "
-                                :item="tr"
-                                :borderd="!!borderd"
-                            />
                         </template>
                     </slot>
                 </tbody>
-            </transition>
+            </transition> -->
             <slot name="footer"></slot>
         </table>
     </div>
 </template>
 <script>
-import vueColabseChaildTable from "./vue-colabse-chaild-table";
+// import vueColabseChaildTable from "./vue-colabse-chaild-table";
+import vueTableHeaderRow from "./vue-table-components/vue-table-header-row.vue";
 // todo: link attr striped
 export default {
     components: {
-        vueColabseChaildTable
+        vueTableHeaderRow,
+        // vueColabseChaildTable
     },
     data: () => ({
         selectAll: false
     }),
     props: {
-        // options
-        colapseOptions: Object,
-        selectOptions: Object,
-        // style
-        align: String,
+        
         // table header row
         headers: {
-            type: Array,
-            required: true
+            type: Object,
+            required: true,
+            default() {
+                return {
+                    rowItem: [],
+                    label: 'label',
+                    value: 'value'
+                }
+            }
         },
         label: {
             type: String,
@@ -145,11 +112,23 @@ export default {
         value: {
             type: Array
         },
+        
+        // style
+        align: String,
         // custom classes
         tableClass: Array,
         theadRowClass: Array,
         tbodyRowClass: Array,
-        borderd: Boolean
+        borderd: Boolean,
+
+        
+        // Collapse Options
+        collapseOptions: Object,
+
+        // Select Options
+        selectOptions: Object,
+
+        
     },
     computed: {
         rows: function() {
@@ -167,9 +146,9 @@ export default {
                 : this.selectOptions.label;
         },
         childrenLabel: function() {
-            return !this.colapseOptions.childrenLabel
+            return !this.collapseOptions.childrenLabel
                 ? "children"
-                : this.colapseOptions.childrenLabel;
+                : this.collapseOptions.childrenLabel;
         }
     },
     methods: {
@@ -231,3 +210,34 @@ export default {
     }
 };
 </script>
+
+
+
+
+<!-- <vueColabseChaildTable
+                                v-if="collapseOptions.enable"
+                                :key="'sub_table_' + index"
+                                :label="
+                                    !collapseOptions.customHeaderLabel
+                                        ? label
+                                        : collapseOptions.customHeaderLabel
+                                "
+                                :open="tr.isOpen"
+                                :selectOptions="selectOptions"
+                                :mainTableLength="rows.length"
+                                :align="vc__align"
+                                :childrenLabel="childrenLabel"
+                                @selectChange="select"
+                                :isHeader="collapseOptions.enableCustomHeadre"
+                                :headers="
+                                    !!(
+                                        !!collapseOptions &&
+                                        !!collapseOptions.header &&
+                                        collapseOptions.header.length
+                                    )
+                                        ? collapseOptions.header
+                                        : headers
+                                "
+                                :item="tr"
+                                :borderd="!!borderd"
+                            /> -->

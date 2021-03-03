@@ -4,31 +4,9 @@
             label="label"
             align="center"
             :headers="header"
-            :colapseOptions="{
-                enable: true,
-                childrenLabel: 'children',
-                enableCustomHeadre: true,
-                customHeaderLabel: 'label',
-                header: [
-                    {
-                        label: 'اسم الوحدة',
-                        value: 'subjectName'
-                    },
-                    {
-                        label: 'الحسم',
-                        value: 'discount'
-                    },
-                    {
-                        label: 'السعر',
-                        value: 'price'
-                    }
-                ]
-            }"
+            :collapseOptions="collapseOptions"
             :value="selected"
-            :selectOptions="{
-                enable: true,
-                label: 'selected'
-            }"
+            :selectOptions="selectOptions"
             :items="items"
             borderd
         >
@@ -45,67 +23,61 @@ export default {
     },
     data() {
         return {
+            collapseOptions: {
+                enable: true,
+                childrenLabel: 'children',
+                enableCustomHeadre: true,
+                customHeaderLabel: 'label',
+                header:  [
+                    {
+                        label: 'اسم الوحدة',
+                        value: 'subjectName'
+                    },
+                    {
+                        label: 'الحسم',
+                        value: 'discount'
+                    },
+                    {
+                        label: 'السعر',
+                        value: 'price'
+                    }
+                ]
+            },
+            selectOptions: {
+                enable: true,
+                label: 'selected'
+            },
             selected: [],
-            header: [
-                {
-                    label: "اسم المادة",
-                    value: "subjectName"
-                },
-                {
-                    label: "السعر",
-                    value: "price",
-                    type: "number"
-                }
-            ],
+            header: {
+                rowItem: [
+                    {
+                        label: "الاسم الاول",
+                        value: "firstName"
+                    },
+                    {
+                        label: "الاسم الاخير",
+                        value: "LastName"
+                    }
+                ],
+                label: 'label',
+                value: 'value'
+            } 
+            ,
             items: [
                 {
                     id: 0,
-                    subjectName: "Senior Devs",
-                    price: 0.15296
+                    firstName: "ahmed",
+                    LastName: "hashash"
                 },
                 {
-                    id: 0,
-                    subjectName: "Senior Devs",
-                    price: 0.15296,
-                    children: [
-                        {
-                            id: 1,
-                            subjectName: "John",
-                            discount: 20,
-                            price: 0.03845
-                        },
-                        {
-                            id: 3,
-                            subjectName: "Susan",
-                            discount: 16,
-                            price: 0.08503
-                        }
-                    ]
+                    id: 1,
+                    firstName: "abood",
+                    LastName: "shoho",
                 },
                 {
-                    id: 0,
-                    subjectName: "Senior Devs",
-                    price: 0.15296,
-                    children: [
-                        {
-                            id: 1,
-                            subjectName: "John",
-                            discount: 20,
-                            price: 0.03845
-                        },
-                        {
-                            id: 2,
-                            subjectName: "Jane",
-                            discount: 24,
-                            price: 0.02948
-                        },
-                        {
-                            id: 3,
-                            subjectName: "Susan",
-                            discount: 16,
-                            price: 0.08503
-                        }
-                    ]
+                    id: 2,
+                    firstName: "sozan",
+                    LastName: "mejo",
                 }
             ]
         };
