@@ -11,9 +11,25 @@
             borderd
         >
         </vue-colabse-table>
+        <footer class="footer">
+            Developing...
+        </footer>
     </div>
 </template>
-
+<style lang="scss" scoped>
+.footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #304455;
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+</style>
 <script>
 import vueColabseTable from "./vue-colabse-table/vue-colabse-table";
 export default {
