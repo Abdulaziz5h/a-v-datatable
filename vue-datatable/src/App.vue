@@ -1,16 +1,21 @@
 <template>
     <div id="app">
-        <vue-colabse-table
-            label="label"
-            align="center"
+        <vue-datatable
+            label="id"
+
             :header="header"
-            :collapseOptions="collapseOptions"
-            :value="selected"
-            :selectOptions="selectOptions"
+
+
             :items="items"
-            borderd
+
+            :selectOptions="selectOptions"
+            @changeCheckbox="selectRow"
+
+            :collapseOptions="collapseOptions"
         >
-        </vue-colabse-table>
+            <!-- :reduce="(item) => ({id: item.id, firstName: item.firstName})" -->
+            <!-- :reduce="(item) => id: item.id" -->
+        </vue-datatable>
         <footer class="footer">
             Developing...
         </footer>
@@ -31,17 +36,16 @@
 }
 </style>
 <script>
-import vueColabseTable from "./vue-colabse-table/vue-colabse-table";
+import vueDatatable from "./vue-datatable/vue-datatable";
 export default {
     name: "App",
     components: {
-        vueColabseTable
+        vueDatatable
     },
     data() {
         return {
-           
             header: {
-                rowItem: [
+                headers: [
                     {
                         label: "الاسم الاول",
                         value: "firstName"
@@ -63,24 +67,29 @@ export default {
                     id: 0,
                     firstName: "ahmed",
                     LastName: "hashash",
-                    password: "******"
+                    password: "******",
                 },
                 {
                     id: 1,
                     firstName: "abood",
                     LastName: "shoho",
-                    password: "********"
+                    password: "********",
                 },
                 {
                     id: 2,
                     firstName: "sozan",
                     LastName: "mejo",
-                    password: "*******"
+                    password: "*******",
                 }
             ],
+            selectOptions: {
+                enable: true,
+                label: 'selected'
+            },
+            selected: [],
 
-
-             collapseOptions: {
+            
+            collapseOptions: {
                 enable: true,
                 childrenLabel: 'children',
                 enableCustomHeadre: true,
@@ -100,12 +109,12 @@ export default {
                     }
                 ]
             },
-            selectOptions: {
-                enable: true,
-                label: 'selected'
-            },
-            selected: [],
         };
+    },
+    methods: {
+        selectRow(selected) {
+            console.log(selected)
+        }
     }
 };
 </script>

@@ -8,14 +8,21 @@
         >
             <thead class="vc__table__thead">
                 <slot name="header">
-                    <vue-table-header-row :row="header.rowItem" :label="header.label" :value="header.value">
+                    <vue-datatable-header-row 
+                        :row="header.headers"
+                        :label="header.label"
+                        :value="header.value"
+                        :selectOptions="selectOptions"
+
+                        @changeHeaderCheckbox="changeHeaderCheckbox"
+                    >
                         <template slot="header-th" slot-scope="{th}">
                             <slot name="header-th" :th="th"></slot>
                         </template>
-                        <template v-for="th in header.rowItem" :slot="'header-th.' + th[header.value]">
+                        <template v-for="th in header.headers" :slot="'header-th.' + th[header.value]">
                             <slot :name="'header-th.' + th[header.value]" :th="th" :label="th[header.label]"></slot>
                         </template>
-                    </vue-table-header-row>
+                    </vue-datatable-header-row>
                 </slot>
             </thead>
             <transition name="slide">
@@ -25,14 +32,32 @@
                 <tbody v-else class="vc__table__tbody">
                     <slot name="body">
                         <template v-for="(item, index) in items">
-                            <vue-table-body-row :key="index" :item="item" :header="header">
+                            <vue-datatable-body-row
+                                :header="header"
+                                :item="item"
+                                :selectOptions="selectOptions"
+                                :key="index"
+                                :rowIndex="index"
+
+                                @changeCheckbox="changeCheckbox(item)"
+                            >
+                            <!-- selection input cells -->
+                                <template slot="header-select-input">
+                                    <slot name="header-select-input"></slot>
+                                </template>
+                                <template slot="body-select-input">
+                                    <slot name="body-select-input" :row="item"></slot>
+                                </template>
+                            <!-- / selection input cells -->
+                            <!-- default rows items -->
                                 <template slot="row-td" slot-scope="{value}">
                                     <slot name="row-td" :row="item" :value="value"></slot>
                                 </template>
-                                <template v-for="th in header.rowItem" :slot="'row-td.' + th[header.value]">
+                                <template v-for="th in header.headers" :slot="'row-td.' + th[header.value]">
                                     <slot :name="'row-td.' + th[header.value]" :row="item" :td="item[th[header.value]]" :value="th[header.value]"></slot>
                                 </template>
-                            </vue-table-body-row>
+                            <!-- / default rows items -->
+                            </vue-datatable-body-row>
                         </template>
                     </slot>
                 </tbody>
@@ -43,47 +68,61 @@
 </template>
 <script>
 // import vueColabseChaildTable from "./vue-colabse-chaild-table";
-import vueTableHeaderRow from "./vue-table-components/vue-table-header-row.vue";
-import vueTableBodyRow from "./vue-table-components/vue-table-body-row.vue";
+import vueDatatableHeaderRow from "./vue-datatable-components/vue-datatable-header-row";
+import vueDatatableBodyRow from "./vue-datatable-components/vue-datatable-body-row.vue";
 
 export default {
     components: {
-        vueTableHeaderRow,
-        vueTableBodyRow,
+        vueDatatableHeaderRow,
+        vueDatatableBodyRow,
         // vueColabseChaildTable
     },
     data: () => ({
-        selectAll: false
+        selectAll: false,
+        selected: []
     }),
     props: {
+        label: {
+            type: String,
+            required: true
+        },
         // table header row
         header: {
             type: Object,
             required: true,
             default() {
                 return {
-                    rowItem: [],
+                    headers: [],
                     label: 'label',
                     value: 'value'
                 }
             }
         },
-        
         // table body rows
         items: {
             type: Array,
             required: true,
         },
 
-
-
+        // Select Options
+        selectOptions: {
+            type: Object,
+            default: () => ({
+                enable: false
+            })
+        },
+        selectedList: {
+            type: Array,
+            default: () => []
+        },
+        reduce: {
+            type: Function,
+            default: () => null
+        },
 
         // Collapse Options
         collapseOptions: Object,
 
-        value: {
-            type: Array
-        },
         
         // style
         align: String,
@@ -93,8 +132,6 @@ export default {
         tbodyRowClass: Array,
         borderd: Boolean,
         striped: Boolean,
-        // Select Options
-        selectOptions: Object,
 
         
     },
@@ -114,6 +151,44 @@ export default {
         }
     },
     methods: {
+        async changeHeaderCheckbox() {
+            this.selected = []
+            if(!this.selectAll) {
+                if(this.reduce({}) != null) {
+                    await this.items.forEach(item => {
+                        this.selected[this.selected.length] = this.reduce(item)
+                    })
+                } else {
+                    this.selected = this.items
+                }
+            }
+            this.selectAll = !this.selectAll
+            this.$emit('changeCheckbox', this.selected)
+        },
+        changeCheckbox(item) {
+            if(this.reduce(item) != null) {
+                // here should check if object is equal to another object
+                const index = this.selected.findIndex((s) => s == this.reduce(item))
+                if(index != -1) {
+                    this.selected.splice(index, 1)
+                } else {
+                    this.selected[this.selected.length] = this.reduce(item)
+                }
+            } else {
+                const index = this.selected.findIndex((s) => s[this.label] == item[this.label])
+                if(index != -1) {
+                    this.selected.splice(index, 1)
+                } else {
+                    this.selected.push(item)
+                }
+            }
+            this.$emit('changeCheckbox', this.selected)
+        },
+
+
+
+
+
         toggleChildren(index) {
             this.$set(this.rows[index], "isOpen", !this.rows[index].isOpen);
         },
@@ -155,19 +230,6 @@ export default {
                     });
                 }
             }
-        }
-    },
-    watch: {
-        selectAll(val) {
-            this.rows.forEach(row => {
-                this.$set(row, this.selectedLabel, val);
-                if(row[this.childrenLabel] != null && row[this.childrenLabel] != undefined) {
-                    row[this.childrenLabel].forEach(child => {
-                        this.$set(child, this.selectedLabel, val);
-                    });
-                    this.select(row, 1);
-                }
-            });
         }
     }
 };

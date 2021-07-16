@@ -1,0 +1,9 @@
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all .4s linear;
+}
+.slide-enter, .slide-leave-to {
+    transform: translateY(-100px);
+    opacity: 0;
+}

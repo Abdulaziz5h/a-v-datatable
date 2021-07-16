@@ -21,11 +21,6 @@
                 text-align: center;
             }
         }
-        >.vc__table__tbody {
-            >.vc__tbody__tr {
-                cursor: pointer;
-            }
-        }
         .vc__table__tr {
             td, th {
                 padding: 10px;
@@ -56,6 +51,8 @@
             }
         }
     }
+
+
     &.borderd {
         .vc__table {
             border: 1px solid #d8d6de;
@@ -100,13 +97,4 @@
             }
         }
     }   
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: all .4s linear;
-}
-.slide-enter, .slide-leave-to {
-    transform: translateY(-100px);
-    opacity: 0;
 }
