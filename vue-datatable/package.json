@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "sh deploy.sh"
+    "deploy": "deploy.sh"
   },
   "author": {
     "name": "Abdulaziz",
@@ -30,6 +30,7 @@
     "select"
   ],
   "dependencies": {
+    "@vue/composition-api": "^1.0.4",
     "core-js": "^3.6.5",
     "vue": "^2.6.11"
   },

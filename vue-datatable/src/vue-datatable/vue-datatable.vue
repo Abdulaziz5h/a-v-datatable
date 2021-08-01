@@ -1,116 +1,132 @@
 <template>
     <div class="vc__table-container">
-        <table
-            class="vc__table"
-            border="0"
-            cellspacing="0"
-            cellpadding="0"
-        >
+        <table class="vc__table" border="0" cellspacing="0" cellpadding="0">
             <thead class="vc__table__thead">
                 <slot name="header">
-                    <vue-datatable-header-row 
-                        :row="header.headers"
-                        :label="header.label"
-                        :value="header.value"
+                    <vue-datatable-header-row
+                        :row="headers"
+                        :label="headerOptions.label"
+                        :value="headerOptions.value"
                         :selectOptions="selectOptions"
-
                         @changeHeaderCheckbox="changeHeaderCheckbox"
                     >
-                        <template slot="header-th" slot-scope="{th}">
+                        <template slot="header-th" slot-scope="{ th }">
                             <slot name="header-th" :th="th"></slot>
                         </template>
-                        <template v-for="th in header.headers" :slot="'header-th.' + th[header.value]">
-                            <slot :name="'header-th.' + th[header.value]" :th="th" :label="th[header.label]"></slot>
+                        <template
+                            v-for="th in headers"
+                            :slot="'header-th.' + th[headerOptions.value]"
+                        >
+                            <slot
+                                :name="'header-th.' + th[headerOptions.value]"
+                                :th="th"
+                                :label="th[headerOptions.label]"
+                            ></slot>
                         </template>
                     </vue-datatable-header-row>
                 </slot>
             </thead>
             <transition name="slide">
-                <caption v-if="!items.length">
+                <caption v-if="!rows.length">
                     لا يوجد بيانات
                 </caption>
                 <tbody v-else class="vc__table__tbody">
                     <slot name="body">
-                        <template v-for="(item, index) in items">
+                        <template v-for="(row, index) in rows">
                             <vue-datatable-body-row
-                                :header="header"
-                                :item="item"
+                                :headerOptions="headerOptions"
+                                :row="row"
+                                :rowIndex="index"
                                 :selectOptions="selectOptions"
                                 :key="index"
-                                :rowIndex="index"
-
-                                @changeCheckbox="changeCheckbox(item)"
+                                @changeCheckbox="changeCheckbox(row.row, index)"
                             >
-                            <!-- selection input cells -->
+                                <!-- selection input cells -->
                                 <template slot="header-select-input">
                                     <slot name="header-select-input"></slot>
                                 </template>
                                 <template slot="body-select-input">
-                                    <slot name="body-select-input" :row="item"></slot>
+                                    <slot
+                                        name="body-select-input"
+                                        :row="row"
+                                    ></slot>
                                 </template>
-                            <!-- / selection input cells -->
-                            <!-- default rows items -->
-                                <template slot="row-td" slot-scope="{value}">
-                                    <slot name="row-td" :row="item" :value="value"></slot>
+                                <!-- / selection input cells -->
+                                <!-- default rows rows -->
+                                <template slot="row-td" slot-scope="{ value, argkey }">
+                                    <slot
+                                        name="row-td"
+                                        :row="row"
+                                        :value="value"
+                                        :argkey="argkey"
+                                    ></slot>
                                 </template>
-                                <template v-for="th in header.headers" :slot="'row-td.' + th[header.value]">
-                                    <slot :name="'row-td.' + th[header.value]" :row="item" :td="item[th[header.value]]" :value="th[header.value]"></slot>
+                                <template
+                                    v-for="(td, key) in row.formatedRow"
+                                    :slot="'row-td.' + key"
+                                    slot-scope="{ value }"
+                                >
+                                    <slot
+                                        :name="'row-td.' + key"
+                                        :value="value"
+                                        :row="row"
+                                    ></slot>
                                 </template>
-                            <!-- / default rows items -->
+                                <!-- / default rows rows -->
                             </vue-datatable-body-row>
                         </template>
                     </slot>
                 </tbody>
             </transition>
-            <slot name="footer"></slot>
+            <slot name="footer">
+            </slot>
         </table>
     </div>
 </template>
 <script>
-// import vueColabseChaildTable from "./vue-colabse-chaild-table";
 import vueDatatableHeaderRow from "./vue-datatable-components/vue-datatable-header-row";
 import vueDatatableBodyRow from "./vue-datatable-components/vue-datatable-body-row.vue";
+
+import { getPropsObj } from "@/utils";
+
+const headerOptionsDefault = { label: "label", value: "value" };
+const selectOptionsDefault = { enable: false, label: "selected" };
+import { ref } from '@vue/composition-api'
 
 export default {
     components: {
         vueDatatableHeaderRow,
-        vueDatatableBodyRow,
-        // vueColabseChaildTable
+        vueDatatableBodyRow
     },
     data: () => ({
         selectAll: false,
-        selected: []
+        selected: new Map(),
     }),
     props: {
-        label: {
-            type: String,
-            required: true
-        },
         // table header row
-        header: {
-            type: Object,
+        headers: {
+            type: Array,
             required: true,
-            default() {
-                return {
-                    headers: [],
-                    label: 'label',
-                    value: 'value'
-                }
-            }
+            default: () => []
         },
+        headerOptions: {
+            type: Object,
+            default: () => headerOptionsDefault
+        },
+
         // table body rows
         items: {
             type: Array,
-            required: true,
+            required: true
         },
 
         // Select Options
         selectOptions: {
             type: Object,
-            default: () => ({
-                enable: false
-            })
+            default: () => selectOptionsDefault
         },
+
+        
         selectedList: {
             type: Array,
             default: () => []
@@ -118,150 +134,72 @@ export default {
         reduce: {
             type: Function,
             default: () => null
-        },
-
-        // Collapse Options
-        collapseOptions: Object,
-
-        
-        // style
-        align: String,
-        // custom classes
-        tableClass: Array,
-        theadRowClass: Array,
-        tbodyRowClass: Array,
-        borderd: Boolean,
-        striped: Boolean,
-
-        
-    },
-    computed: {
-        vc__align: function() {
-            return !this.align ? "" : { "text-align": this.align };
-        },
-        selectedLabel: function() {
-            return !this.selectOptions.label
-                ? "selected"
-                : this.selectOptions.label;
-        },
-        childrenLabel: function() {
-            return !this.collapseOptions.childrenLabel
-                ? "children"
-                : this.collapseOptions.childrenLabel;
         }
+    },
+    setup(props) {
+        // set default header value
+        getPropsObj(props.headerOptions, headerOptionsDefault);
+        getPropsObj(props.selectOptions, selectOptionsDefault);
+
+        const rows = props.items.map((row, index) => {
+            const formatedRow = {};
+            props.headers.forEach(head => {
+                Object.assign(formatedRow, {
+                    [head[props.headerOptions.value]]:
+                        row[head[props.headerOptions.value]]
+                });
+            });
+            const obj = ref({
+                id: index,
+                row: { ...row },
+                formatedRow,
+                [props.selectOptions.label]: false
+            });
+            return obj.value
+        });
+        console.log(rows)
+        return { rows };
     },
     methods: {
         async changeHeaderCheckbox() {
-            this.selected = []
-            if(!this.selectAll) {
-                if(this.reduce({}) != null) {
+            this.selected = [];
+            if (!this.selectAll) {
+                if (this.reduce({}) != null) {
                     await this.items.forEach(item => {
-                        this.selected[this.selected.length] = this.reduce(item)
-                    })
-                } else {
-                    this.selected = this.items
-                }
-            }
-            this.selectAll = !this.selectAll
-            this.$emit('changeCheckbox', this.selected)
-        },
-        changeCheckbox(item) {
-            if(this.reduce(item) != null) {
-                // here should check if object is equal to another object
-                const index = this.selected.findIndex((s) => s == this.reduce(item))
-                if(index != -1) {
-                    this.selected.splice(index, 1)
-                } else {
-                    this.selected[this.selected.length] = this.reduce(item)
-                }
-            } else {
-                const index = this.selected.findIndex((s) => s[this.label] == item[this.label])
-                if(index != -1) {
-                    this.selected.splice(index, 1)
-                } else {
-                    this.selected.push(item)
-                }
-            }
-            this.$emit('changeCheckbox', this.selected)
-        },
-
-
-
-
-
-        toggleChildren(index) {
-            this.$set(this.rows[index], "isOpen", !this.rows[index].isOpen);
-        },
-        selectChange(tr) {
-            const selectValue = !tr[this.selectedLabel];
-            this.$set(tr, this.selectedLabel, selectValue);
-            if(tr[this.childrenLabel] != null && tr[this.childrenLabel] != undefined) {
-                tr[this.childrenLabel].forEach(child => {
-                    this.$set(child, this.selectedLabel, selectValue);
-                });
-                this.select(tr, 1);
-            }
-        },
-        select(obj, type) {
-            if (type && obj[this.selectedLabel]) {
-                obj[this.childrenLabel].forEach(child => {
-                    if (child[this.selectedLabel]) {
-                        this.value.unshift(child);
-                    }
-                });
-            } else if (type) {
-                obj[this.childrenLabel].forEach(child => {
-                    if(this.value != null && this.value != undefined) {
-                        this.value.forEach((item, index, list) => {
-                            if (JSON.stringify(item) === JSON.stringify(child)) {
-                                list.splice(index, 1);
-                            }
-                        });
-                    }
-                });
-            } else if (!type && obj[this.selectedLabel]) {
-                this.value.unshift(obj);
-            } else {
-                if(this.value != null && this.value != undefined) {
-                    this.value.map((item, index, list) => {
-                        if (JSON.stringify(item) === JSON.stringify(obj)) {
-                            list.splice(index, 1);
-                        }
+                        this.selected[this.selected.length] = this.reduce(item);
                     });
+                } else {
+                    this.selected = [...this.items];
                 }
             }
+            this.selectAll = !this.selectAll;
+            this.$emit("changeCheckbox", this.selected);
+        },
+        changeCheckbox(row, index) {
+            console.log(row, index)
+            if (this.reduce(row) != null) {
+                //TODO: here should set obj as we reduce row
+                console.log(this.selected.get(index))
+                // here should check if object is equal to another object
+                // if (index != -1) {
+                //     this.selected.splice(index, 1);
+                // } else {
+                //     this.selected[index] = this.reduce(row);
+                // }
+            } else {
+                //TODO: here should set full obj
+                console.log(this.selected.get(index))
+                // const index = this.selected.findIndex(
+                //     s => s[this.identifier] == row.row[this.identifier]
+                // );
+                // if (index != -1) {
+                //     this.selected.splice(index, 1);
+                // } else {
+                //     this.selected.push(row.row);
+                // }
+            }
+            this.$emit("input", this.selected);
         }
     }
 };
 </script>
-
-
-
-
-<!-- <vueColabseChaildTable
-                                v-if="collapseOptions.enable"
-                                :key="'sub_table_' + index"
-                                :label="
-                                    !collapseOptions.customHeaderLabel
-                                        ? label
-                                        : collapseOptions.customHeaderLabel
-                                "
-                                :open="tr.isOpen"
-                                :selectOptions="selectOptions"
-                                :mainTableLength="rows.length"
-                                :align="vc__align"
-                                :childrenLabel="childrenLabel"
-                                @selectChange="select"
-                                :isHeader="collapseOptions.enableCustomHeadre"
-                                :headers="
-                                    !!(
-                                        !!collapseOptions &&
-                                        !!collapseOptions.header &&
-                                        collapseOptions.header.length
-                                    )
-                                        ? collapseOptions.header
-                                        : headers
-                                "
-                                :item="tr"
-                                :borderd="!!borderd"
-                            /> -->

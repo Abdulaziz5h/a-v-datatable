@@ -1,29 +1,26 @@
 <template>
     <div id="app">
-        <vue-datatable
-            label="id"
+        <div>
+            <vue-datatable
+                :headers="headers"
+                :headerOptions="headerOptions"
 
-            :header="header"
+                :items="items"
 
-
-            :items="items"
-
-            :selectOptions="selectOptions"
-            @changeCheckbox="selectRow"
-
-            :collapseOptions="collapseOptions"
-        >
-            <!-- :reduce="(item) => ({id: item.id, firstName: item.firstName})" -->
-            <!-- :reduce="(item) => id: item.id" -->
-        </vue-datatable>
-        <footer class="footer">
-            Developing...
-        </footer>
+                :selectOptions="selectOptions"
+                @input="selectRow"
+            >
+                <!-- :reduce="(item) => item.id" -->
+                <!-- :reduce="(item) => ({id: item.id, firstName: item.firstName})" -->
+            </vue-datatable>
+            <footer class="footer">
+                Developing...
+            </footer>
+        </div>
     </div>
 </template>
 <style lang="scss" scoped>
 .footer{
-    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
@@ -37,6 +34,7 @@
 </style>
 <script>
 import vueDatatable from "./vue-datatable/vue-datatable";
+import { rows, headers } from "@/fake-data/table-rows.js"
 export default {
     name: "App",
     components: {
@@ -44,71 +42,16 @@ export default {
     },
     data() {
         return {
-            header: {
-                headers: [
-                    {
-                        label: "الاسم الاول",
-                        value: "firstName"
-                    },
-                    {
-                        label: "الاسم الاخير",
-                        value: "LastName"
-                    },
-                    {
-                        label: "كلمة المرور",
-                        value: "password"
-                    }
-                ],
+            headers,
+            headerOptions: {
                 label: 'label',
                 value: 'value'
             },
-            items: [
-                {
-                    id: 0,
-                    firstName: "ahmed",
-                    LastName: "hashash",
-                    password: "******",
-                },
-                {
-                    id: 1,
-                    firstName: "abood",
-                    LastName: "shoho",
-                    password: "********",
-                },
-                {
-                    id: 2,
-                    firstName: "sozan",
-                    LastName: "mejo",
-                    password: "*******",
-                }
-            ],
+            items: rows,
             selectOptions: {
                 enable: true,
-                label: 'selected'
             },
             selected: [],
-
-            
-            collapseOptions: {
-                enable: true,
-                childrenLabel: 'children',
-                enableCustomHeadre: true,
-                customHeaderLabel: 'label',
-                header:  [
-                    {
-                        label: 'اسم الوحدة',
-                        value: 'subjectName'
-                    },
-                    {
-                        label: 'الحسم',
-                        value: 'discount'
-                    },
-                    {
-                        label: 'السعر',
-                        value: 'price'
-                    }
-                ]
-            },
         };
     },
     methods: {
@@ -118,5 +61,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss"></style>
