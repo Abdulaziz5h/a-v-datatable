@@ -4,7 +4,6 @@
 >
     <td v-if="selectOptions.enable" class="selection">
         <slot name="body-select-input">
-            {{row[selectOptions.label]}}
             <input type="checkbox" v-model="row[selectOptions.label]">
         </slot>
     </td>
