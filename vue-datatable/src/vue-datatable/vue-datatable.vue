@@ -1,5 +1,5 @@
 <template>
-    <div class="vc__table-container">
+    <div class="vc__table-container" :class="classes">
         <table class="vc__table" border="0" cellspacing="0" cellpadding="0">
             <thead class="vc__table__thead">
                 <slot name="header">
@@ -132,6 +132,11 @@ export default {
         reduce: {
             type: Function,
             default: () => null
+        },
+
+        // styling props
+        classes: {
+            type: String
         }
     },
     setup(props) {

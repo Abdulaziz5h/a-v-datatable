@@ -7,6 +7,7 @@
                 :items="items"
                 :selectOptions="selectOptions"
                 v-model="selected"
+                classes="borderd cell-borderd striped"
             >
                 <!-- select1 => :reduce="(item) => item.id" -->
                 <!-- select2 => :reduce="(item) => ({id: item.id, first_name: item.first_name})" -->

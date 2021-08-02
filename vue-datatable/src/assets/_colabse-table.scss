@@ -70,6 +70,16 @@
                 }
             }
         }
+        &.cell-borderd {
+            td, th {
+                border: 1px solid #d8d6de;
+                border-top: none;
+                border-left: none;
+            }
+            td:last-of-type, th:last-of-type {
+                border-right: none;
+            }
+        }
     }
     &.striped {
         .vc__table {
