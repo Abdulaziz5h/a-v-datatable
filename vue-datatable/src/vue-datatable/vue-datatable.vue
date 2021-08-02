@@ -92,6 +92,7 @@ import { getPropsObj } from "@/utils";
 const headerOptionsDefault = { label: "label", value: "value" };
 const selectOptionsDefault = { enable: false, label: "selected" };
 import { ref } from '@vue/composition-api'
+import _ from 'lodash'
 
 export default {
     components: {
@@ -99,7 +100,6 @@ export default {
         vueDatatableBodyRow
     },
     data: () => ({
-        selectAll: false,
         selected: new Map(),
     }),
     props: {
@@ -125,11 +125,9 @@ export default {
             type: Object,
             default: () => selectOptionsDefault
         },
-
         
-        selectedList: {
-            type: Array,
-            default: () => []
+        value: {
+            type: null
         },
         reduce: {
             type: Function,
@@ -157,46 +155,37 @@ export default {
             });
             return obj.value
         });
-        console.log(rows)
         return { rows };
     },
+    mounted() {
+        if(this.value) {
+            this.value.forEach(val => {
+                let idx = this.rows.findIndex(row => {
+                    if (this.reduce(row.row) != null) {
+                        return _.isEqual(this.reduce(row.row), val)
+                    } else {
+                        return _.isEqual(row.row, val)
+                    }
+                })
+                if(idx != -1) this.rows[idx][this.selectOptions.label] = true
+            })
+        }
+    },
     methods: {
-        async changeHeaderCheckbox() {
-            this.selected = [];
-            if (!this.selectAll) {
-                if (this.reduce({}) != null) {
-                    await this.items.forEach(item => {
-                        this.selected[this.selected.length] = this.reduce(item);
-                    });
-                } else {
-                    this.selected = [...this.items];
-                }
-            }
-            this.selectAll = !this.selectAll;
-            this.$emit("changeCheckbox", this.selected);
+        changeHeaderCheckbox(val) {
+            this.rows.map((row) => {
+                row[this.selectOptions.label] = val
+            })
         },
         changeCheckbox(row, index) {
-            console.log(row, index)
-            if (this.reduce(row) != null) {
-                //TODO: here should set obj as we reduce row
-                console.log(this.selected.get(index))
-                // here should check if object is equal to another object
-                // if (index != -1) {
-                //     this.selected.splice(index, 1);
-                // } else {
-                //     this.selected[index] = this.reduce(row);
-                // }
+            if(this.selected.get(index)) {
+                this.selected.delete(index);
             } else {
-                //TODO: here should set full obj
-                console.log(this.selected.get(index))
-                // const index = this.selected.findIndex(
-                //     s => s[this.identifier] == row.row[this.identifier]
-                // );
-                // if (index != -1) {
-                //     this.selected.splice(index, 1);
-                // } else {
-                //     this.selected.push(row.row);
-                // }
+                if (this.reduce(row) != null) {
+                    this.selected.set(index, this.reduce(row));
+                } else {
+                    this.selected.set(index, row);
+                }
             }
             this.$emit("input", this.selected);
         }

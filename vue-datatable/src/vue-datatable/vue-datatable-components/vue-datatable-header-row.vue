@@ -1,8 +1,8 @@
 <template>
     <tr class="vc__table__tr vc__thead__tr">
-        <th v-if="selectOptions.enable" class="selection" id="header-select-input">
+        <th v-if="selectOptions.enable" class="selection">
             <slot name="header-select-input">
-                <input type="checkbox">
+                <input type="checkbox" v-model="selectAll">
             </slot>
         </th>
         <slot v-for="(th, index) in row" name="header-th" :th="th">
@@ -20,23 +20,14 @@ export default {
         row: Array,
         label: String,
         value: String,
-        selectOptions: {
-            type: Object,
-            default: () => ({
-                enable: false
-            })
-        }
+        selectOptions: Object
     },
-    mounted() {
-        const headerSelectInput = document.getElementById('header-select-input').children[0]
-        if(headerSelectInput) {
-            if(headerSelectInput.getAttribute('type') != 'checkbox') {
-                console.warn('[vue-datatable] slot "header-select-input" expect checkbox element')
-            } else {
-                headerSelectInput.addEventListener('change', () => {
-                    this.$emit('changeHeaderCheckbox')
-                });
-            }
+    data: () => ({
+        selectAll: false
+    }),
+    watch: {
+        selectAll(val) {
+            this.$emit('changeHeaderCheckbox', val)
         }
     }
 };

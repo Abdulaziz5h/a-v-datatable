@@ -1,17 +1,15 @@
 <template>
     <div id="app">
-        <div>
+        <div style="padding-bottom: 40px;">
             <vue-datatable
                 :headers="headers"
                 :headerOptions="headerOptions"
-
                 :items="items"
-
                 :selectOptions="selectOptions"
-                @input="selectRow"
+                v-model="selected"
             >
-                <!-- :reduce="(item) => item.id" -->
-                <!-- :reduce="(item) => ({id: item.id, firstName: item.firstName})" -->
+                <!-- select1 => :reduce="(item) => item.id" -->
+                <!-- select2 => :reduce="(item) => ({id: item.id, first_name: item.first_name})" -->
             </vue-datatable>
             <footer class="footer">
                 Developing...
@@ -20,7 +18,8 @@
     </div>
 </template>
 <style lang="scss" scoped>
-.footer{
+.footer {
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
@@ -34,7 +33,7 @@
 </style>
 <script>
 import vueDatatable from "./vue-datatable/vue-datatable";
-import { rows, headers } from "@/fake-data/table-rows.js"
+import { rows, headers } from "@/fake-data/table-rows.js";
 export default {
     name: "App",
     components: {
@@ -44,20 +43,58 @@ export default {
         return {
             headers,
             headerOptions: {
-                label: 'label',
-                value: 'value'
+                label: "label",
+                value: "value"
             },
             items: rows,
             selectOptions: {
-                enable: true,
+                enable: true
             },
-            selected: [],
+            selected: [
+                {
+                    id: 8,
+                    first_name: "Marjy",
+                    last_name: "Arden",
+                    email: "marden7@imdb.com",
+                    gender: "Male",
+                    cars: [
+                        {
+                            id: 5,
+                            make: "Ford",
+                            model: "LTD Crown Victoria",
+                            modelYear: 1991
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    first_name: "Jason",
+                    last_name: "Wilprecht",
+                    email: "jwilprecht3@booking.com",
+                    gender: "Female",
+                    cars: [
+                        {
+                            id: 1,
+                            make: "GMC",
+                            model: "Yukon Denali",
+                            modelYear: 2006
+                        },
+                        {
+                            id: 2,
+                            make: "Mitsubishi",
+                            model: "Diamante",
+                            modelYear: 1995
+                        }
+                    ]
+                }
+            ],
+            // selected1: [4, 6, 1],
+            // selected2: [
+            //     { id: 8, first_name: "Marjy" },
+            //     { id: 6, first_name: "Abbey" },
+            //     { id: 4, first_name: "Jason" }
+            // ],
         };
-    },
-    methods: {
-        selectRow(selected) {
-            console.log(selected)
-        }
     }
 };
 </script>
