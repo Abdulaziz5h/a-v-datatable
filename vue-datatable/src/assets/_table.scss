@@ -1,11 +1,8 @@
-
 .vc__table-container {
+    overflow-x: auto;
     .vc__table {
         background: #fff;
         width: 100%;
-        .vc__table {
-            background: #f9f9f9;
-        }
         caption {
             caption-side: bottom;
             padding: 10px;
@@ -13,7 +10,9 @@
         }
         .vc__table__thead {
             .vc__thead__tr {
-                
+                th {
+                    white-space: nowrap;
+                }
             }
         }
         .vc__table__tbody {
@@ -28,30 +27,44 @@
             .selection {
                 width: 26px;
             }
-            .colapse-icon{
-                border-right: 1px solid #d8d6de;
+            .colapse-icon {
                 width: 26px;
                 position: relative;
                 .icon {
-                    transition: all .4s linear;
                     position: absolute;
-                    transform-origin: 50% 50%;
                     height: 100%;
-                    top: 0;
                     width: 100%;
-                    display: flex;
-                    vertical-align: middle;
+                    top: 0;
                     left: 0;
+                    display: flex;
                     justify-content: center;
                     align-items: center;
+                    span {
+                        transform-origin: 50% 75%;
+                        transition: all .4s linear;
+                    }
                 }
-                .icon.colapsed {
-                    transform: rotate(-180deg);
+                .colapsed {
+                    transform: rotate(180deg);
                 }
             }
         }
     }
 
+    .collapse-tr {
+        > td {
+            padding: 3px;
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, .225);
+            tr:last-of-type {
+                td {
+                    border-bottom: none!important;
+                }
+            }
+            caption {
+                border-bottom: none!important;
+            }
+        }
+    }
 
     &.borderd {
         .vc__table {

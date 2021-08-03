@@ -222,3 +222,18 @@ export const headers = [
         value: "gender"
     }
 ]
+
+export const subHeaders = [
+    {
+        label: "الشركة المصنعة",
+        value: "make"
+    },
+    {
+        label: "موديل",
+        value: "model"
+    },
+    {
+        label: "سنة الموديل",
+        value: "modelYear"
+    }
+]

@@ -6,6 +6,9 @@
                 :headerOptions="headerOptions"
                 :items="items"
                 :selectOptions="selectOptions"
+
+                :collapseOptoins="collapseOptoins"
+
                 v-model="selected"
                 classes="borderd cell-borderd striped"
             >
@@ -50,6 +53,10 @@ export default {
             items: rows,
             selectOptions: {
                 enable: true
+            },
+            collapseOptoins: {
+                enable: true,
+                label: 'cars'
             },
             selected: [
                 {

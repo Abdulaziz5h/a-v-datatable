@@ -12,6 +12,7 @@
                 </slot>
             </th>
         </slot>
+        <th v-if="isCollapse" :key="row.length" class="collapse-th"></th>
     </tr>
 </template>
 <script>
@@ -20,7 +21,8 @@ export default {
         row: Array,
         label: String,
         value: String,
-        selectOptions: Object
+        selectOptions: Object,
+        isCollapse: Boolean
     },
     data: () => ({
         selectAll: false

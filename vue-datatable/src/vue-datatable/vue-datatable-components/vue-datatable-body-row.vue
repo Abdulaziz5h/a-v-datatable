@@ -21,6 +21,13 @@
             </slot>
         </td>
     </slot>
+    <td v-if="isCollapse" :key="row.length" class="colapse-icon" @click="row.open = !row.open">
+        <div class="icon">
+            <span :class="{colapsed: row.open}">
+                <slot name="collapse-icon"><span style="height: 10px; display: block;">^</span></slot>
+            </span>
+        </div>
+    </td>
 </tr>
 </template>
 
@@ -30,6 +37,7 @@ export default {
         row: Object,
         headerOptions: Object,
         selectOptions: Object,
+        isCollapse: Boolean
     },
     methods: {
         chainge(row, e) {

@@ -9,6 +9,7 @@
                         :value="headerOptions.value"
                         :selectOptions="selectOptions"
                         @changeHeaderCheckbox="changeHeaderCheckbox"
+                        :isCollapse="collapseOptoins.enable"
                     >
                         <template slot="header-th" slot-scope="{ th }">
                             <slot name="header-th" :th="th"></slot>
@@ -40,6 +41,7 @@
                                 :selectOptions="selectOptions"
                                 :key="index"
                                 @changeCheckbox="changeCheckbox(row.row, index)"
+                                :isCollapse="collapseOptoins.enable"
                             >
                                 <!-- selection input cells -->
                                 <template slot="header-select-input">
@@ -53,7 +55,10 @@
                                 </template>
                                 <!-- / selection input cells -->
                                 <!-- default rows rows -->
-                                <template slot="row-td" slot-scope="{ value, argkey }">
+                                <template
+                                    slot="row-td"
+                                    slot-scope="{ value, argkey }"
+                                >
                                     <slot
                                         name="row-td"
                                         :row="row"
@@ -74,12 +79,34 @@
                                 </template>
                                 <!-- / default rows rows -->
                             </vue-datatable-body-row>
+                            <!-- TODO: fix animation -->
+                            <transition name="slide"
+                                :key="'collapse-tr-' + index"
+                            >
+                                <tr
+                                    v-if="
+                                        collapseOptoins.enable &&
+                                        row.row[collapseOptoins.label] &&
+                                        row.open
+                                    "
+                                    class="collapse-tr"
+                                >
+                                    <td colspan="100%">
+                                        <vue-datatable
+                                            :headers="subHeaders"
+                                            :headerOptions="headerOptions"
+                                            :items="row.row[collapseOptoins.label]"
+                                            :selectOptions="selectOptions"
+                                            :classes="classes"
+                                        ></vue-datatable>
+                                    </td>
+                                </tr>
+                            </transition>
                         </template>
                     </slot>
                 </tbody>
             </transition>
-            <slot name="footer">
-            </slot>
+            <slot name="footer"> </slot>
         </table>
     </div>
 </template>
@@ -91,16 +118,21 @@ import { getPropsObj } from "@/utils";
 
 const headerOptionsDefault = { label: "label", value: "value" };
 const selectOptionsDefault = { enable: false, label: "selected" };
-import { ref } from '@vue/composition-api'
-import _ from 'lodash'
+const collapseOptoinsDefault = { enable: false, label: "children" };
+import { ref } from "@vue/composition-api";
+import _ from "lodash";
 
+// TODO: remove this
+import { subHeaders } from "@/fake-data/table-rows.js";
 export default {
+    name: "vue-datatable",
     components: {
         vueDatatableHeaderRow,
         vueDatatableBodyRow
     },
     data: () => ({
         selected: new Map(),
+        subHeaders
     }),
     props: {
         // table header row
@@ -125,13 +157,18 @@ export default {
             type: Object,
             default: () => selectOptionsDefault
         },
-        
         value: {
             type: null
         },
         reduce: {
             type: Function,
             default: () => null
+        },
+
+        // Collapse Optoins
+        collapseOptoins: {
+            type: Object,
+            default: () => collapseOptoinsDefault
         },
 
         // styling props
@@ -143,6 +180,7 @@ export default {
         // set default header value
         getPropsObj(props.headerOptions, headerOptionsDefault);
         getPropsObj(props.selectOptions, selectOptionsDefault);
+        getPropsObj(props.collapseOptoins, collapseOptoinsDefault);
 
         const rows = props.items.map((row, index) => {
             const formatedRow = {};
@@ -156,34 +194,35 @@ export default {
                 id: index,
                 row: { ...row },
                 formatedRow,
-                [props.selectOptions.label]: false
+                [props.selectOptions.label]: false,
+                open: false
             });
-            return obj.value
+            return obj.value;
         });
         return { rows };
     },
     mounted() {
-        if(this.value) {
+        if (this.value) {
             this.value.forEach(val => {
                 let idx = this.rows.findIndex(row => {
                     if (this.reduce(row.row) != null) {
-                        return _.isEqual(this.reduce(row.row), val)
+                        return _.isEqual(this.reduce(row.row), val);
                     } else {
-                        return _.isEqual(row.row, val)
+                        return _.isEqual(row.row, val);
                     }
-                })
-                if(idx != -1) this.rows[idx][this.selectOptions.label] = true
-            })
+                });
+                if (idx != -1) this.rows[idx][this.selectOptions.label] = true;
+            });
         }
     },
     methods: {
         changeHeaderCheckbox(val) {
-            this.rows.map((row) => {
-                row[this.selectOptions.label] = val
-            })
+            this.rows.map(row => {
+                row[this.selectOptions.label] = val;
+            });
         },
         changeCheckbox(row, index) {
-            if(this.selected.get(index)) {
+            if (this.selected.get(index)) {
                 this.selected.delete(index);
             } else {
                 if (this.reduce(row) != null) {
