@@ -7,6 +7,7 @@
                         :row="headers"
                         :label="headerOptions.label"
                         :value="headerOptions.value"
+                        :collapseOptoins="collapseOptoins"
                         :selectOptions="selectOptions"
                         @changeHeaderCheckbox="changeHeaderCheckbox"
                         :isCollapse="collapseOptoins.enable"
@@ -41,6 +42,7 @@
                                 :selectOptions="selectOptions"
                                 :key="index"
                                 @changeCheckbox="changeCheckbox(row.row, index)"
+                                :collapseOptoins="collapseOptoins"
                                 :isCollapse="collapseOptoins.enable"
                             >
                                 <!-- selection input cells -->
@@ -79,19 +81,18 @@
                                 </template>
                                 <!-- / default rows rows -->
                             </vue-datatable-body-row>
-                            <!-- TODO: fix animation -->
-                            <transition name="slide"
+                            <td colspan="100%"
+                                v-if="row.row[collapseOptoins.label]"
                                 :key="'collapse-tr-' + index"
                             >
-                                <tr
-                                    v-if="
-                                        collapseOptoins.enable &&
-                                        row.row[collapseOptoins.label] &&
-                                        row.open
-                                    "
-                                    class="collapse-tr"
-                                >
-                                    <td colspan="100%">
+                                <transition name="slide">
+                                    <div
+                                        class="collapse-tr"
+                                        v-if="
+                                            collapseOptoins.enable &&
+                                            row.row[collapseOptoins.label] &&
+                                            row.open"
+                                    >
                                         <vue-datatable
                                             :headers="subHeaders"
                                             :headerOptions="headerOptions"
@@ -99,9 +100,9 @@
                                             :selectOptions="selectOptions"
                                             :classes="classes"
                                         ></vue-datatable>
-                                    </td>
-                                </tr>
-                            </transition>
+                                    </div>
+                                </transition>
+                            </td>
                         </template>
                     </slot>
                 </tbody>

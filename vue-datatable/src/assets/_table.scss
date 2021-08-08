@@ -52,17 +52,15 @@
     }
 
     .collapse-tr {
-        > td {
-            padding: 3px;
-            box-shadow: inset 0 0 12px rgba(0, 0, 0, .225);
-            tr:last-of-type {
-                td {
-                    border-bottom: none!important;
-                }
-            }
-            caption {
+        padding: 3px;
+        box-shadow: inset 0 0 12px rgba(0, 0, 0, .225);
+        tr:last-of-type {
+            td {
                 border-bottom: none!important;
             }
+        }
+        caption {
+            border-bottom: none!important;
         }
     }
 

@@ -1,4 +1,5 @@
 <template>
+<!-- TODO: Select values from sub table -->
     <div id="app">
         <div style="padding-bottom: 40px;">
             <vue-datatable
@@ -56,7 +57,9 @@ export default {
             },
             collapseOptoins: {
                 enable: true,
-                label: 'cars'
+                label: 'cars',
+                // TODO: add select group options
+                groupSelect: true
             },
             selected: [
                 {

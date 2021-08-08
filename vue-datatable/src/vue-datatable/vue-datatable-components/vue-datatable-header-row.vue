@@ -1,6 +1,6 @@
 <template>
     <tr class="vc__table__tr vc__thead__tr">
-        <th v-if="selectOptions.enable" class="selection">
+        <th v-if="selectOptions.enable && !collapseOptoins.enable" class="selection">
             <slot name="header-select-input">
                 <input type="checkbox" v-model="selectAll">
             </slot>
@@ -22,7 +22,8 @@ export default {
         label: String,
         value: String,
         selectOptions: Object,
-        isCollapse: Boolean
+        isCollapse: Boolean,
+        collapseOptoins: Object
     },
     data: () => ({
         selectAll: false

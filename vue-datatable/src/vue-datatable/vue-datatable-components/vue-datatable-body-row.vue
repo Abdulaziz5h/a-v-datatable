@@ -2,7 +2,7 @@
 <tr
     class="vc__table__tr vc__tbody__tr"
 >
-    <td v-if="selectOptions.enable" class="selection">
+    <td v-if="selectOptions.enable && (!collapseOptoins.enable || (collapseOptoins.enable && !row.row[collapseOptoins.label]))" class="selection">
         <slot name="body-select-input">
             <input type="checkbox" v-model="row[selectOptions.label]">
         </slot>
@@ -13,7 +13,9 @@
         :argkey="key"
         :value="td"
     >
-        <td :key="index">
+        <td 
+            @click="row.open = !row.open"
+            :key="index">
             <slot :name="'row-td.' + key"
                 :value="td"
             >
@@ -21,7 +23,10 @@
             </slot>
         </td>
     </slot>
-    <td v-if="isCollapse" :key="row.length" class="colapse-icon" @click="row.open = !row.open">
+    <td 
+        @click="row.open = !row.open"
+        v-if="isCollapse" :key="row.length" class="colapse-icon"
+    >
         <div class="icon">
             <span :class="{colapsed: row.open}">
                 <slot name="collapse-icon"><span style="height: 10px; display: block;">^</span></slot>
@@ -37,6 +42,7 @@ export default {
         row: Object,
         headerOptions: Object,
         selectOptions: Object,
+        collapseOptoins: Object,
         isCollapse: Boolean
     },
     methods: {
