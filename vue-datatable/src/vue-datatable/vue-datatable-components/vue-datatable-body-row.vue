@@ -1,39 +1,51 @@
 <template>
-<tr
-    class="vc__table__tr vc__tbody__tr"
->
-    <td v-if="selectOptions.enable && (!collapseOptoins.enable || (collapseOptoins.enable && !row.row[collapseOptoins.label]))" class="selection">
-        <slot name="body-select-input">
-            <input type="checkbox" v-model="row[selectOptions.label]">
-        </slot>
-    </td>
-    <slot
-        v-for="(td, key, index) in row.formatedRow"
-        name="row-td"
-        :argkey="key"
-        :value="td"
-    >
-        <td 
-            @click="row.open = !row.open"
-            :key="index">
-            <slot :name="'row-td.' + key"
-                :value="td"
-            >
-                {{ td }}
+    <tr class="vc__table__tr vc__tbody__tr">
+        <td
+            v-if="
+                selectOptions.enable &&
+                    (!collapseOptoins.enable ||
+                        (collapseOptoins.enable &&
+                            !row.row[collapseOptoins.label]))
+            "
+            class="selection"
+        >
+            <slot name="body-select-input">
+                <input
+                    type="checkbox"
+                    v-model="row[selectOptions.label]"
+                    @input="selectRow(row, $event)"
+                />
             </slot>
         </td>
-    </slot>
-    <td 
-        @click="row.open = !row.open"
-        v-if="isCollapse" :key="row.length" class="colapse-icon"
-    >
-        <div class="icon">
-            <span :class="{colapsed: row.open}">
-                <slot name="collapse-icon"><span style="height: 10px; display: block;">^</span></slot>
-            </span>
-        </div>
-    </td>
-</tr>
+        <slot
+            v-for="(td, key, index) in row.formatedRow"
+            name="row-td"
+            :argkey="key"
+            :value="td"
+        >
+            <td @click="change(row)" :key="index">
+                <slot :name="'row-td.' + key" :value="td">
+                    {{ td }}
+                </slot>
+            </td>
+        </slot>
+        <td
+            @click="change(row)"
+            v-if="isCollapse"
+            :key="row.length"
+            class="colapse-icon"
+        >
+            <div class="icon">
+                <span :class="{ colapsed: row.open }">
+                    <slot name="collapse-icon"
+                        ><span style="height: 10px; display: block;"
+                            >^</span
+                        ></slot
+                    >
+                </span>
+            </div>
+        </td>
+    </tr>
 </template>
 
 <script>
@@ -46,17 +58,12 @@ export default {
         isCollapse: Boolean
     },
     methods: {
-        chainge(row, e) {
-            row[this.selectOptions.label] = e.target.value
-        }
-    },
-    watch: {
-        'row': {
-            handler() {
-                this.$emit('changeCheckbox')
-            },
-            deep: true
+        change(row) {
+            row.open = !row.open;
+        },
+        selectRow() {
+            this.$emit("changeCheckbox");
         }
     }
-}
+};
 </script>

@@ -54,31 +54,31 @@ export const rows = [
         gender: "Male",
         cars: [
             {
-                id: 1,
+                id: 6,
                 make: "GMC",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
-                id: 2,
+                id: 7,
                 make: "Mitsubishi",
                 model: "Diamante",
                 modelYear: 1995
             },
             {
-                id: 3,
+                id: 8,
                 make: "Ford",
                 model: "Explorer",
                 modelYear: 1992
             },
             {
-                id: 4,
+                id: 9,
                 make: "Dodge",
                 model: "Caravan",
                 modelYear: 1985
             },
             {
-                id: 5,
+                id: 10,
                 make: "Ford",
                 model: "LTD Crown Victoria",
                 modelYear: 1991
@@ -93,13 +93,13 @@ export const rows = [
         gender: "Female",
         cars: [
             {
-                id: 1,
+                id: 11,
                 make: "GMC",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
-                id: 2,
+                id: 12,
                 make: "Mitsubishi",
                 model: "Diamante",
                 modelYear: 1995
@@ -114,19 +114,19 @@ export const rows = [
         gender: "Female",
         cars: [
             {
-                id: 1,
+                id: 13,
                 make: "GMC",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
-                id: 2,
+                id: 14,
                 make: "Mitsubishi",
                 model: "Diamante",
                 modelYear: 1995
             },
             {
-                id: 3,
+                id: 15,
                 make: "Ford",
                 model: "Explorer",
                 modelYear: 1992
@@ -141,294 +141,71 @@ export const rows = [
         gender: "Male",
         cars: [
             {
-                id: 1,
+                id: 16,
                 make: "GMC",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
-                id: 2,
+                id: 17,
                 make: "Mitsubishi",
                 model: "Diamante",
                 modelYear: 1995
             },
             {
-                id: 3,
+                id: 18,
                 make: "Ford",
                 model: "Explorer",
                 modelYear: 1992
             },
             {
-                id: 4,
+                id: 19,
                 make: "Dodge",
                 model: "Caravan",
                 modelYear: 1985
             },
             {
-                id: 1,
+                id: 20,
                 make: "GMC",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
-                id: 2,
+                id: 21,
                 make: "Mitsubishi",
                 model: "Diamante",
                 modelYear: 1995
             },
             {
-                id: 3,
+                id: 22,
                 make: "Ford",
                 model: "Explorer",
                 modelYear: 1992
             },
             {
-                id: 4,
+                id: 23,
                 make: "Dodge",
                 model: "Caravan",
                 modelYear: 1985
             },
             {
-                id: 1,
+                id: 24,
                 make: "GMC",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
-                id: 2,
+                id: 25,
                 make: "Mitsubishi",
                 model: "Diamante",
                 modelYear: 1995
             },
             {
-                id: 3,
+                id: 26,
                 make: "Ford",
                 model: "Explorer",
                 modelYear: 1992
-            },
-            {
-                id: 4,
-                make: "Dodge",
-                model: "Caravan",
-                modelYear: 1985
-            },
-            {
-                id: 1,
-                make: "GMC",
-                model: "Yukon Denali",
-                modelYear: 2006
-            },
-            {
-                id: 2,
-                make: "Mitsubishi",
-                model: "Diamante",
-                modelYear: 1995
-            },
-            {
-                id: 3,
-                make: "Ford",
-                model: "Explorer",
-                modelYear: 1992
-            },
-            {
-                id: 4,
-                make: "Dodge",
-                model: "Caravan",
-                modelYear: 1985
-            },
-            {
-                id: 1,
-                make: "GMC",
-                model: "Yukon Denali",
-                modelYear: 2006
-            },
-            {
-                id: 2,
-                make: "Mitsubishi",
-                model: "Diamante",
-                modelYear: 1995
-            },
-            {
-                id: 3,
-                make: "Ford",
-                model: "Explorer",
-                modelYear: 1992
-            },
-            {
-                id: 4,
-                make: "Dodge",
-                model: "Caravan",
-                modelYear: 1985
-            },
-            {
-                id: 1,
-                make: "GMC",
-                model: "Yukon Denali",
-                modelYear: 2006
-            },
-            {
-                id: 2,
-                make: "Mitsubishi",
-                model: "Diamante",
-                modelYear: 1995
-            },
-            {
-                id: 3,
-                make: "Ford",
-                model: "Explorer",
-                modelYear: 1992
-            },
-            {
-                id: 4,
-                make: "Dodge",
-                model: "Caravan",
-                modelYear: 1985
-            },
-            {
-                id: 1,
-                make: "GMC",
-                model: "Yukon Denali",
-                modelYear: 2006
-            },
-            {
-                id: 2,
-                make: "Mitsubishi",
-                model: "Diamante",
-                modelYear: 1995
-            },
-            {
-                id: 3,
-                make: "Ford",
-                model: "Explorer",
-                modelYear: 1992
-            },
-            {
-                id: 4,
-                make: "Dodge",
-                model: "Caravan",
-                modelYear: 1985
-            },
-            {
-                id: 1,
-                make: "GMC",
-                model: "Yukon Denali",
-                modelYear: 2006
-            },
-            {
-                id: 2,
-                make: "Mitsubishi",
-                model: "Diamante",
-                modelYear: 1995
-            },
-            {
-                id: 3,
-                make: "Ford",
-                model: "Explorer",
-                modelYear: 1992
-            },
-            {
-                id: 4,
-                make: "Dodge",
-                model: "Caravan",
-                modelYear: 1985
-            },
-            {
-                id: 1,
-                make: "GMC",
-                model: "Yukon Denali",
-                modelYear: 2006
-            },
-            {
-                id: 2,
-                make: "Mitsubishi",
-                model: "Diamante",
-                modelYear: 1995
-            },
-            {
-                id: 3,
-                make: "Ford",
-                model: "Explorer",
-                modelYear: 1992
-            },
-            {
-                id: 4,
-                make: "Dodge",
-                model: "Caravan",
-                modelYear: 1985
-            },
-            {
-                id: 1,
-                make: "GMC",
-                model: "Yukon Denali",
-                modelYear: 2006
-            },
-            {
-                id: 2,
-                make: "Mitsubishi",
-                model: "Diamante",
-                modelYear: 1995
-            },
-            {
-                id: 3,
-                make: "Ford",
-                model: "Explorer",
-                modelYear: 1992
-            },
-            {
-                id: 4,
-                make: "Dodge",
-                model: "Caravan",
-                modelYear: 1985
-            },
-            {
-                id: 1,
-                make: "GMC",
-                model: "Yukon Denali",
-                modelYear: 2006
-            },
-            {
-                id: 2,
-                make: "Mitsubishi",
-                model: "Diamante",
-                modelYear: 1995
-            },
-            {
-                id: 3,
-                make: "Ford",
-                model: "Explorer",
-                modelYear: 1992
-            },
-            {
-                id: 4,
-                make: "Dodge",
-                model: "Caravan",
-                modelYear: 1985
-            },
-            {
-                id: 1,
-                make: "GMC",
-                model: "Yukon Denali",
-                modelYear: 2006
-            },
-            {
-                id: 2,
-                make: "Mitsubishi",
-                model: "Diamante",
-                modelYear: 1995
-            },
-            {
-                id: 3,
-                make: "Ford",
-                model: "Explorer",
-                modelYear: 1992
-            },
-            {
-                id: 4,
-                make: "Dodge",
-                model: "Caravan",
-                modelYear: 1985
-            },
-            
+            }
         ]
     },
     {
@@ -439,13 +216,13 @@ export const rows = [
         gender: "Male",
         cars: [
             {
-                id: 1,
+                id: 27,
                 make: "GMC",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
-                id: 2,
+                id: 28,
                 make: "Mitsubishi",
                 model: "Diamante",
                 modelYear: 1995
@@ -460,7 +237,7 @@ export const rows = [
         gender: "Male",
         cars: [
             {
-                id: 5,
+                id: 30,
                 make: "Ford",
                 model: "LTD Crown Victoria",
                 modelYear: 1991
@@ -471,22 +248,22 @@ export const rows = [
 
 export const headers = [
     {
-        label: "الاسم الاول",
+        label: "first name",
         value: "first_name"
     },
     {
-        label: "الاسم الاخير",
+        label: "last name",
         value: "last_name"
     },
     {
-        label: "الحساب",
+        label: "email",
         value: "email"
     },
     {
-        label: "الجنس",
+        label: "gender",
         value: "gender"
     }
-]
+];
 
 export const subHeaders = [
     {
@@ -501,4 +278,4 @@ export const subHeaders = [
         label: "سنة الموديل",
         value: "modelYear"
     }
-]
+];

@@ -9,8 +9,17 @@
                         :value="headerOptions.value"
                         :collapseOptoins="collapseOptoins"
                         :selectOptions="selectOptions"
-                        @changeHeaderCheckbox="changeHeaderCheckbox"
+                        @changeHeaderCheckbox="
+                            changeHeaderCheckbox(rows, $event)
+                        "
                         :isCollapse="collapseOptoins.enable"
+                        :headerStatus="
+                            !headerStatus
+                                ? -1
+                                : headerStatus == rows.length
+                                ? 1
+                                : 0
+                        "
                     >
                         <template slot="header-th" slot-scope="{ th }">
                             <slot name="header-th" :th="th"></slot>
@@ -29,8 +38,10 @@
                 </slot>
             </thead>
             <transition name="slide">
-                <caption v-if="!rows.length">
-                    لا يوجد بيانات
+                <caption v-if="!rows || !rows.length">
+                    <slot name="empty">
+                        No items was found
+                    </slot>
                 </caption>
                 <tbody v-else class="vc__table__tbody">
                     <slot name="body">
@@ -41,9 +52,16 @@
                                 :rowIndex="index"
                                 :selectOptions="selectOptions"
                                 :key="index"
-                                @changeCheckbox="changeCheckbox(row.row, index)"
+                                @changeCheckbox="changeCheckbox(row)"
                                 :collapseOptoins="collapseOptoins"
                                 :isCollapse="collapseOptoins.enable"
+                                :headerStatus="
+                                    !headerStatus
+                                        ? -1
+                                        : headerStatus == rows.length
+                                        ? 1
+                                        : 0
+                                "
                             >
                                 <!-- selection input cells -->
                                 <template slot="header-select-input">
@@ -81,7 +99,8 @@
                                 </template>
                                 <!-- / default rows rows -->
                             </vue-datatable-body-row>
-                            <td colspan="100%"
+                            <td
+                                colspan="100%"
                                 v-if="row.row[collapseOptoins.label]"
                                 :key="'collapse-tr-' + index"
                             >
@@ -90,15 +109,23 @@
                                         class="collapse-tr"
                                         v-if="
                                             collapseOptoins.enable &&
-                                            row.row[collapseOptoins.label] &&
-                                            row.open"
+                                                row.row[
+                                                    collapseOptoins.label
+                                                ] &&
+                                                row.open
+                                        "
                                     >
                                         <vue-datatable
-                                            :headers="subHeaders"
+                                            :headers="collapseOptoins.headers"
                                             :headerOptions="headerOptions"
-                                            :items="row.row[collapseOptoins.label]"
+                                            :items="
+                                                row.row[collapseOptoins.label]
+                                            "
                                             :selectOptions="selectOptions"
                                             :classes="classes"
+                                            isChild
+                                            :reduce="reduce"
+                                            v-model="value"
                                         ></vue-datatable>
                                     </div>
                                 </transition>
@@ -107,7 +134,7 @@
                     </slot>
                 </tbody>
             </transition>
-            <slot name="footer"> </slot>
+            <slot name="footer"></slot>
         </table>
     </div>
 </template>
@@ -115,26 +142,30 @@
 import vueDatatableHeaderRow from "./vue-datatable-components/vue-datatable-header-row";
 import vueDatatableBodyRow from "./vue-datatable-components/vue-datatable-body-row.vue";
 
+// getPropsObj this func combine props
 import { getPropsObj } from "@/utils";
 
+// default props
 const headerOptionsDefault = { label: "label", value: "value" };
-const selectOptionsDefault = { enable: false, label: "selected" };
-const collapseOptoinsDefault = { enable: false, label: "children" };
+const selectOptionsDefault = {
+    enable: false,
+    label: "selected"
+};
+const collapseOptoinsDefault = {
+    enable: false,
+    label: "children",
+    headers: []
+};
 import { ref } from "@vue/composition-api";
 import _ from "lodash";
+import { v4 as uuidv4 } from "uuid";
 
-// TODO: remove this
-import { subHeaders } from "@/fake-data/table-rows.js";
 export default {
     name: "vue-datatable",
     components: {
         vueDatatableHeaderRow,
         vueDatatableBodyRow
     },
-    data: () => ({
-        selected: new Map(),
-        subHeaders
-    }),
     props: {
         // table header row
         headers: {
@@ -159,7 +190,7 @@ export default {
             default: () => selectOptionsDefault
         },
         value: {
-            type: null
+            type: Array
         },
         reduce: {
             type: Function,
@@ -175,15 +206,20 @@ export default {
         // styling props
         classes: {
             type: String
-        }
+        },
+        isChild: Boolean
     },
     setup(props) {
-        // set default header value
+        let headerStatus = 0;
+        // set default headers value if no collapse option headers was implement
+        collapseOptoinsDefault.headers = props.headers;
+
+        // combine default props with enterd props
         getPropsObj(props.headerOptions, headerOptionsDefault);
         getPropsObj(props.selectOptions, selectOptionsDefault);
         getPropsObj(props.collapseOptoins, collapseOptoinsDefault);
 
-        const rows = props.items.map((row, index) => {
+        const rows = props.items.map(row => {
             const formatedRow = {};
             props.headers.forEach(head => {
                 Object.assign(formatedRow, {
@@ -192,47 +228,69 @@ export default {
                 });
             });
             const obj = ref({
-                id: index,
+                id: uuidv4(),
                 row: { ...row },
                 formatedRow,
-                [props.selectOptions.label]: false,
+                [props.selectOptions.label]:
+                    props.value.findIndex(val => {
+                        if (props.reduce(row) != null) {
+                            return _.isEqual(props.reduce(row), val);
+                        } else {
+                            return _.isEqual(row, val);
+                        }
+                    }) != -1,
                 open: false
             });
+            if (obj.value[props.selectOptions.label]) {
+                headerStatus++;
+            }
             return obj.value;
         });
-        return { rows };
-    },
-    mounted() {
-        if (this.value) {
-            this.value.forEach(val => {
-                let idx = this.rows.findIndex(row => {
-                    if (this.reduce(row.row) != null) {
-                        return _.isEqual(this.reduce(row.row), val);
-                    } else {
-                        return _.isEqual(row.row, val);
-                    }
-                });
-                if (idx != -1) this.rows[idx][this.selectOptions.label] = true;
-            });
-        }
+        return { rows, headerStatus };
     },
     methods: {
-        changeHeaderCheckbox(val) {
-            this.rows.map(row => {
+        changeHeaderCheckbox(rows, val) {
+            rows.forEach(row => {
                 row[this.selectOptions.label] = val;
+                this.changeCheckbox(row, val);
             });
         },
-        changeCheckbox(row, index) {
-            if (this.selected.get(index)) {
-                this.selected.delete(index);
-            } else {
-                if (this.reduce(row) != null) {
-                    this.selected.set(index, this.reduce(row));
+        changeCheckbox(row, is) {
+            const index = this.value.findIndex(val => {
+                if (this.reduce(row.row) != null) {
+                    return _.isEqual(this.reduce(row.row), val);
                 } else {
-                    this.selected.set(index, row);
+                    return _.isEqual(row.row, val);
+                }
+            });
+            if (is === undefined) {
+                if (index != -1) {
+                    this.value.splice(index, 1);
+                    this.headerStatus--;
+                } else {
+                    if (this.reduce(row.row) != null) {
+                        this.value.unshift(this.reduce(row.row));
+                    } else {
+                        this.value.unshift(row.row);
+                    }
+                    this.headerStatus++;
+                }
+            } else if (is) {
+                if (index == -1) {
+                    if (this.reduce(row.row) != null) {
+                        this.value.unshift(this.reduce(row.row));
+                    } else {
+                        this.value.unshift(row.row);
+                    }
+                    this.headerStatus++;
+                }
+            } else {
+                if (index != -1) {
+                    this.value.splice(index, 1);
+                    this.headerStatus--;
                 }
             }
-            this.$emit("input", this.selected);
+            this.$emit("input", this.value);
         }
     }
 };

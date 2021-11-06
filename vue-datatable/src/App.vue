@@ -1,5 +1,4 @@
 <template>
-<!-- TODO: Select values from sub table -->
     <div id="app">
         <div style="padding-bottom: 40px;">
             <vue-datatable
@@ -7,14 +6,14 @@
                 :headerOptions="headerOptions"
                 :items="items"
                 :selectOptions="selectOptions"
-
                 :collapseOptoins="collapseOptoins"
-
-                v-model="selected"
+                v-model="selected1"
                 classes="borderd cell-borderd striped"
+                :reduce="item => item.id"
             >
                 <!-- select1 => :reduce="(item) => item.id" -->
-                <!-- select2 => :reduce="(item) => ({id: item.id, first_name: item.first_name})" -->
+                <!-- select2 => :reduce="(item) => ({id: item.id, first_name:
+                item.first_name})" -->
             </vue-datatable>
             <footer class="footer">
                 Developing...
@@ -38,7 +37,7 @@
 </style>
 <script>
 import vueDatatable from "./vue-datatable/vue-datatable";
-import { rows, headers } from "@/fake-data/table-rows.js";
+import { rows, headers, subHeaders } from "@/fake-data/table-rows.js";
 export default {
     name: "App",
     components: {
@@ -57,53 +56,53 @@ export default {
             },
             collapseOptoins: {
                 enable: true,
-                label: 'cars',
-                // TODO: add select group options
-                groupSelect: true
+                label: "cars",
+                headers: subHeaders
             },
-            selected: [
-                {
-                    id: 8,
-                    first_name: "Marjy",
-                    last_name: "Arden",
-                    email: "marden7@imdb.com",
-                    gender: "Male",
-                    cars: [
-                        {
-                            id: 5,
-                            make: "Ford",
-                            model: "LTD Crown Victoria",
-                            modelYear: 1991
-                        }
-                    ]
-                },
-                {
-                    id: 4,
-                    first_name: "Jason",
-                    last_name: "Wilprecht",
-                    email: "jwilprecht3@booking.com",
-                    gender: "Female",
-                    cars: [
-                        {
-                            id: 1,
-                            make: "GMC",
-                            model: "Yukon Denali",
-                            modelYear: 2006
-                        },
-                        {
-                            id: 2,
-                            make: "Mitsubishi",
-                            model: "Diamante",
-                            modelYear: 1995
-                        }
-                    ]
-                }
-            ],
-            // selected1: [4, 6, 1],
+            selected: [2, 5, 6],
+            // selected: [
+            //     {
+            //         id: 8,
+            //         first_name: "Marjy",
+            //         last_name: "Arden",
+            //         email: "marden7@imdb.com",
+            //         gender: "Male",
+            //         cars: [
+            //             {
+            //                 id: 30,
+            //                 make: "Ford",
+            //                 model: "LTD Crown Victoria",
+            //                 modelYear: 1991
+            //             }
+            //         ]
+            //     },
+            //     {
+            //         id: 4,
+            //         first_name: "Jason",
+            //         last_name: "Wilprecht",
+            //         email: "jwilprecht3@booking.com",
+            //         gender: "Female",
+            //         cars: [
+            //             {
+            //                 id: 11,
+            //                 make: "GMC",
+            //                 model: "Yukon Denali",
+            //                 modelYear: 2006
+            //             },
+            //             {
+            //                 id: 12,
+            //                 make: "Mitsubishi",
+            //                 model: "Diamante",
+            //                 modelYear: 1995
+            //             }
+            //         ]
+            //     }
+            // ],
+            selected1: [24, 26, 10, 30]
             // selected2: [
-            //     { id: 8, first_name: "Marjy" },
-            //     { id: 6, first_name: "Abbey" },
-            //     { id: 4, first_name: "Jason" }
+            // { id: 8, first_name: "Marjy" },
+            // { id: 6, first_name: "Abbey" },
+            // { id: 4, first_name: "Jason" }
             // ],
         };
     }

@@ -1,8 +1,14 @@
 <template>
     <tr class="vc__table__tr vc__thead__tr">
-        <th v-if="selectOptions.enable && !collapseOptoins.enable" class="selection">
+        <th
+            class="selection"
+            v-if="selectOptions.enable && !collapseOptoins.enable"
+        >
             <slot name="header-select-input">
-                <input type="checkbox" v-model="selectAll">
+                <div class="checkbox-container">
+                    <input type="checkbox" v-model="selectAll" />
+                    <span class="bar" v-if="!headerStatus"></span>
+                </div>
             </slot>
         </th>
         <slot v-for="(th, index) in row" name="header-th" :th="th">
@@ -23,15 +29,47 @@ export default {
         value: String,
         selectOptions: Object,
         isCollapse: Boolean,
-        collapseOptoins: Object
+        collapseOptoins: Object,
+        headerStatus: Number
     },
     data: () => ({
-        selectAll: false
+        selectAll: false,
+        // in cuse of clear one of sub checks
+        // to prevent file selectAll watcher
+        flag: true
     }),
     watch: {
         selectAll(val) {
-            this.$emit('changeHeaderCheckbox', val)
+            if (this.flag) this.$emit("changeHeaderCheckbox", val);
+        },
+        headerStatus(l) {
+            if (l == 1) {
+                this.selectAll = true;
+            } else {
+                this.flag = false;
+                this.selectAll = false;
+            }
+            // in cuse of clear one of sub checks
+            setTimeout(() => {
+                this.flag = true;
+            });
         }
     }
 };
 </script>
+
+<style scoped lang="scss">
+.checkbox-container {
+    position: relative;
+    .bar {
+        position: absolute;
+        top: 8px;
+        left: 9px;
+        width: 9px;
+        height: 3px;
+        background: #212121;
+        display: block;
+        pointer-events: none;
+    }
+}
+</style>
