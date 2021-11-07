@@ -3,8 +3,8 @@
         <div style="padding-bottom: 40px;">
             <vue-datatable
                 :headers="headers"
-                :headerOptions="headerOptions"
                 :items="items"
+                :headerOptions="headerOptions"
                 :selectOptions="selectOptions"
                 :collapseOptoins="collapseOptoins"
                 v-model="selected1"

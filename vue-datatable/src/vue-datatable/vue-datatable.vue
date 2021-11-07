@@ -38,12 +38,7 @@
                 </slot>
             </thead>
             <transition name="slide">
-                <caption v-if="!rows || !rows.length">
-                    <slot name="empty">
-                        No items was found
-                    </slot>
-                </caption>
-                <tbody v-else class="vc__table__tbody">
+                <tbody v-if="rows && rows.length" class="vc__table__tbody">
                     <slot name="body">
                         <template v-for="(row, index) in rows">
                             <vue-datatable-body-row
@@ -73,6 +68,10 @@
                                         :row="row"
                                     ></slot>
                                 </template>
+                                <template slot="collapse-icon">
+                                    <slot name="collapse-icon"></slot>
+                                </template>
+
                                 <!-- / selection input cells -->
                                 <!-- default rows rows -->
                                 <template
@@ -126,15 +125,21 @@
                                             isChild
                                             :reduce="reduce"
                                             v-model="value"
-                                        ></vue-datatable>
+                                        >
+                                        </vue-datatable>
                                     </div>
                                 </transition>
                             </td>
                         </template>
                     </slot>
                 </tbody>
+                <caption v-else>
+                    <slot name="empty">
+                        No items was found
+                    </slot>
+                </caption>
             </transition>
-            <slot name="footer"></slot>
+            <slot name="footer"> </slot>
         </table>
     </div>
 </template>
@@ -190,7 +195,8 @@ export default {
             default: () => selectOptionsDefault
         },
         value: {
-            type: Array
+            type: Array,
+            default: () => []
         },
         reduce: {
             type: Function,
