@@ -16,7 +16,7 @@ export default {
         vueDatatable
     },
     data: () => ({
-        headers = [
+        headers: [
           {
                 label: "first name",
                 value: "first_name"
