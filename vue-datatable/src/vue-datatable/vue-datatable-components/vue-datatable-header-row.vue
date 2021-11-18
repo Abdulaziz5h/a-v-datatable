@@ -61,6 +61,8 @@ export default {
 <style scoped lang="scss">
 .checkbox-container {
     position: relative;
+    width: 26px;
+    margin: auto;
     .bar {
         position: absolute;
         top: 8px;

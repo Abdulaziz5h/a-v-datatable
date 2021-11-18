@@ -10,11 +10,14 @@
                 v-model="selected1"
                 classes="borderd cell-borderd striped"
                 :reduce="item => item.id"
+                ref="table"
             >
                 <!-- select1 => :reduce="(item) => item.id" -->
                 <!-- select2 => :reduce="(item) => ({id: item.id, first_name:
                 item.first_name})" -->
             </vue-datatable>
+            <button @click="addItem()">add</button>
+            <button @click="removeItem()">remove</button>
             <footer class="footer">
                 Developing...
             </footer>
@@ -105,6 +108,34 @@ export default {
             // { id: 4, first_name: "Jason" }
             // ],
         };
+    },
+    methods: {
+        removeItem() {
+            this.$refs.table.remove(5);
+        },
+        addItem() {
+            this.$refs.table.add({
+                id: 110,
+                first_name: "Cthrine",
+                last_name: "Jilkes",
+                email: "cjilkes0@mapy.cz",
+                gender: "male",
+                cars: [
+                    {
+                        id: 1,
+                        make: "GMC",
+                        model: "Yukon Denali",
+                        modelYear: 2006
+                    },
+                    {
+                        id: 5,
+                        make: "Ford",
+                        model: "LTD Crown Victoria",
+                        modelYear: 1991
+                    }
+                ]
+            });
+        }
     }
 };
 </script>

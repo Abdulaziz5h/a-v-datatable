@@ -139,7 +139,7 @@
                     </slot>
                 </caption>
             </transition>
-            <slot name="footer"> </slot>
+            <slot name="footer"></slot>
         </table>
     </div>
 </template>
@@ -225,34 +225,36 @@ export default {
         getPropsObj(props.selectOptions, selectOptionsDefault);
         getPropsObj(props.collapseOptoins, collapseOptoinsDefault);
 
-        const rows = props.items.map(row => {
-            const formatedRow = {};
-            props.headers.forEach(head => {
-                Object.assign(formatedRow, {
-                    [head[props.headerOptions.value]]:
-                        row[head[props.headerOptions.value]]
+        const rows = ref(
+            props.items.map(row => {
+                const formatedRow = {};
+                props.headers.forEach(head => {
+                    Object.assign(formatedRow, {
+                        [head[props.headerOptions.value]]:
+                            row[head[props.headerOptions.value]]
+                    });
                 });
-            });
-            const obj = ref({
-                id: uuidv4(),
-                row: { ...row },
-                formatedRow,
-                [props.selectOptions.label]:
-                    props.value.findIndex(val => {
-                        if (props.reduce(row) != null) {
-                            return _.isEqual(props.reduce(row), val);
-                        } else {
-                            return _.isEqual(row, val);
-                        }
-                    }) != -1,
-                open: false
-            });
-            if (obj.value[props.selectOptions.label]) {
-                headerStatus++;
-            }
-            return obj.value;
-        });
-        return { rows, headerStatus };
+                const obj = ref({
+                    id: uuidv4(),
+                    row: { ...row },
+                    formatedRow,
+                    [props.selectOptions.label]:
+                        props.value.findIndex(val => {
+                            if (props.reduce(row) != null) {
+                                return _.isEqual(props.reduce(row), val);
+                            } else {
+                                return _.isEqual(row, val);
+                            }
+                        }) != -1,
+                    open: false
+                });
+                if (obj.value[props.selectOptions.label]) {
+                    headerStatus++;
+                }
+                return obj.value;
+            })
+        );
+        return { rows: rows.value, headerStatus };
     },
     methods: {
         changeHeaderCheckbox(rows, val) {
@@ -297,7 +299,44 @@ export default {
                 }
             }
             this.$emit("input", this.value);
-        }
+        },
+        add(row) {
+            const formatedRow = {};
+            this.headers.forEach(head => {
+                Object.assign(formatedRow, {
+                    [head[this.headerOptions.value]]:
+                        row[head[this.headerOptions.value]]
+                });
+            });
+            const obj = ref({
+                id: uuidv4(),
+                row: { ...row },
+                formatedRow,
+                [this.selectOptions.label]:
+                    this.value.findIndex(val => {
+                        if (this.reduce(row) != null) {
+                            return _.isEqual(this.reduce(row), val);
+                        } else {
+                            return _.isEqual(row, val);
+                        }
+                    }) != -1,
+                open: false
+            });
+            if (obj.value[this.selectOptions.label]) {
+                this.headerStatus++;
+            }
+            this.rows.unshift(obj.value);
+        },
+        remove(index) {
+            if (this.rows[index]) {
+                this.rows.splice(index, 1);
+            } else {
+                console.warn(
+                    "item with index " + index + " is not exist in the array"
+                );
+            }
+        },
+        update() {}
     }
 };
 </script>
