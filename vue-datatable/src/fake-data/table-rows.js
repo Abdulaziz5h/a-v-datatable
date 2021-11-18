@@ -8,31 +8,31 @@ export const rows = [
         cars: [
             {
                 id: 1,
-                make: "GMC",
+                make: "GMC 1",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
                 id: 2,
-                make: "Mitsubishi",
-                model: "Diamante",
+                make: "Mitsubishi 2",
+                model: "Diamante 2",
                 modelYear: 1995
             },
             {
                 id: 3,
-                make: "Ford",
-                model: "Explorer",
+                make: "Ford 3",
+                model: "Explorer 3",
                 modelYear: 1992
             },
             {
                 id: 4,
-                make: "Dodge",
-                model: "Caravan",
+                make: "Dodge 4",
+                model: "Caravan 5",
                 modelYear: 1985
             },
             {
                 id: 5,
-                make: "Ford",
+                make: "Ford 5",
                 model: "LTD Crown Victoria",
                 modelYear: 1991
             }
@@ -55,31 +55,31 @@ export const rows = [
         cars: [
             {
                 id: 6,
-                make: "GMC",
+                make: "GMC 1",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
                 id: 7,
-                make: "Mitsubishi",
+                make: "Mitsubishi 2",
                 model: "Diamante",
                 modelYear: 1995
             },
             {
                 id: 8,
-                make: "Ford",
+                make: "Ford 3",
                 model: "Explorer",
                 modelYear: 1992
             },
             {
                 id: 9,
-                make: "Dodge",
+                make: "Dodge 4",
                 model: "Caravan",
                 modelYear: 1985
             },
             {
                 id: 10,
-                make: "Ford",
+                make: "Ford 5",
                 model: "LTD Crown Victoria",
                 modelYear: 1991
             }
@@ -94,13 +94,13 @@ export const rows = [
         cars: [
             {
                 id: 11,
-                make: "GMC",
+                make: "GMC 1",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
                 id: 12,
-                make: "Mitsubishi",
+                make: "Mitsubishi 2",
                 model: "Diamante",
                 modelYear: 1995
             }
@@ -115,19 +115,19 @@ export const rows = [
         cars: [
             {
                 id: 13,
-                make: "GMC",
+                make: "GMC 1",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
                 id: 14,
-                make: "Mitsubishi",
+                make: "Mitsubishi 2",
                 model: "Diamante",
                 modelYear: 1995
             },
             {
                 id: 15,
-                make: "Ford",
+                make: "Ford 3",
                 model: "Explorer",
                 modelYear: 1992
             }
@@ -142,67 +142,67 @@ export const rows = [
         cars: [
             {
                 id: 16,
-                make: "GMC",
+                make: "GMC 1",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
                 id: 17,
-                make: "Mitsubishi",
+                make: "Mitsubishi 2",
                 model: "Diamante",
                 modelYear: 1995
             },
             {
                 id: 18,
-                make: "Ford",
+                make: "Ford 3",
                 model: "Explorer",
                 modelYear: 1992
             },
             {
                 id: 19,
-                make: "Dodge",
+                make: "Dodge 4",
                 model: "Caravan",
                 modelYear: 1985
             },
             {
                 id: 20,
-                make: "GMC",
+                make: "GMC 5",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
                 id: 21,
-                make: "Mitsubishi",
+                make: "Mitsubishi 6",
                 model: "Diamante",
                 modelYear: 1995
             },
             {
                 id: 22,
-                make: "Ford",
+                make: "Ford 7",
                 model: "Explorer",
                 modelYear: 1992
             },
             {
                 id: 23,
-                make: "Dodge",
+                make: "Dodge 8",
                 model: "Caravan",
                 modelYear: 1985
             },
             {
                 id: 24,
-                make: "GMC",
+                make: "GMC 9",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
                 id: 25,
-                make: "Mitsubishi",
+                make: "Mitsubishi 10",
                 model: "Diamante",
                 modelYear: 1995
             },
             {
                 id: 26,
-                make: "Ford",
+                make: "Ford 11",
                 model: "Explorer",
                 modelYear: 1992
             }
@@ -217,13 +217,13 @@ export const rows = [
         cars: [
             {
                 id: 27,
-                make: "GMC",
+                make: "GMC 1",
                 model: "Yukon Denali",
                 modelYear: 2006
             },
             {
                 id: 28,
-                make: "Mitsubishi",
+                make: "Mitsubishi 2",
                 model: "Diamante",
                 modelYear: 1995
             }
@@ -238,7 +238,7 @@ export const rows = [
         cars: [
             {
                 id: 30,
-                make: "Ford",
+                make: "Ford 1",
                 model: "LTD Crown Victoria",
                 modelYear: 1991
             }
@@ -262,6 +262,10 @@ export const headers = [
     {
         label: "gender",
         value: "gender"
+    },
+    {
+        label: "actions",
+        value: "actions"
     }
 ];
 
@@ -277,5 +281,9 @@ export const subHeaders = [
     {
         label: "سنة الموديل",
         value: "modelYear"
+    },
+    {
+        label: "actions",
+        value: "actions"
     }
 ];

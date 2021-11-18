@@ -11,6 +11,8 @@
                 classes="borderd cell-borderd striped"
                 :reduce="item => item.id"
                 ref="table"
+                @remove="log"
+                @details="log"
             >
                 <!-- select1 => :reduce="(item) => item.id" -->
                 <!-- select2 => :reduce="(item) => ({id: item.id, first_name:
@@ -110,6 +112,9 @@ export default {
         };
     },
     methods: {
+        log(a) {
+            console.log(a);
+        },
         removeItem() {
             this.$refs.table.remove(5);
         },

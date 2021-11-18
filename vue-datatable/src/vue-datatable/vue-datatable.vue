@@ -47,7 +47,6 @@
                                 :rowIndex="index"
                                 :selectOptions="selectOptions"
                                 :key="index"
-                                @changeCheckbox="changeCheckbox(row)"
                                 :collapseOptoins="collapseOptoins"
                                 :isCollapse="collapseOptoins.enable"
                                 :headerStatus="
@@ -57,6 +56,9 @@
                                         ? 1
                                         : 0
                                 "
+                                @changeCheckbox="changeCheckbox(row)"
+                                @remove="remove(index)"
+                                @details="details"
                             >
                                 <!-- selection input cells -->
                                 <template slot="header-select-input">
@@ -68,10 +70,29 @@
                                         :row="row"
                                     ></slot>
                                 </template>
+                                <template
+                                    slot="row-td.actions"
+                                    slot-scope="{ tr }"
+                                >
+                                    <!-- tr = row -->
+                                    <slot name="row-td.actions" :row="tr">
+                                        <template slot="remove">
+                                            <slot
+                                                name="remove"
+                                                :row="tr"
+                                            ></slot>
+                                        </template>
+                                        <template slot="details">
+                                            <slot
+                                                name="details"
+                                                :row="tr"
+                                            ></slot>
+                                        </template>
+                                    </slot>
+                                </template>
                                 <template slot="collapse-icon">
                                     <slot name="collapse-icon"></slot>
                                 </template>
-
                                 <!-- / selection input cells -->
                                 <!-- default rows rows -->
                                 <template
@@ -125,6 +146,7 @@
                                             isChild
                                             :reduce="reduce"
                                             v-model="value"
+                                            @details="details"
                                         >
                                         </vue-datatable>
                                     </div>
@@ -327,16 +349,21 @@ export default {
             }
             this.rows.unshift(obj.value);
         },
+        update() {},
         remove(index) {
             if (this.rows[index]) {
+                this.$emit("remove", this.rows[index]);
                 this.rows.splice(index, 1);
+                this.items.splice(index, 1);
             } else {
                 console.warn(
                     "item with index " + index + " is not exist in the array"
                 );
             }
         },
-        update() {}
+        details(row) {
+            this.$emit("details", row);
+        }
     }
 };
 </script>

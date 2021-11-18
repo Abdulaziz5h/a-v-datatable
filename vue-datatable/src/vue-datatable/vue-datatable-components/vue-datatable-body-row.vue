@@ -23,7 +23,21 @@
             :argkey="key"
             :value="td"
         >
-            <td @click="change(row)" :key="index">
+            <td :key="index" v-if="key == 'actions'">
+                <slot name="row-td.actions" :tr="row">
+                    <slot name="remove">
+                        <button @click="remove">
+                            X
+                        </button>
+                    </slot>
+                    <slot name="details">
+                        <button @click="details">
+                            D
+                        </button>
+                    </slot>
+                </slot>
+            </td>
+            <td @click="change(row)" :key="index" v-else>
                 <slot :name="'row-td.' + key" :value="td">
                     {{ td }}
                 </slot>
@@ -63,6 +77,12 @@ export default {
         },
         selectRow() {
             this.$emit("changeCheckbox");
+        },
+        remove() {
+            this.$emit("remove");
+        },
+        details() {
+            this.$emit("details", this.row);
         }
     }
 };

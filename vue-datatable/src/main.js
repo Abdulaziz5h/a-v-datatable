@@ -1,8 +1,8 @@
 import Vue from "vue";
 import App from "./App.vue";
-import VueCompositionAPI from '@vue/composition-api'
+import VueCompositionAPI from "@vue/composition-api";
 
-Vue.use(VueCompositionAPI)
+Vue.use(VueCompositionAPI);
 require("./assets/main.scss");
 Vue.config.productionTip = false;
 
