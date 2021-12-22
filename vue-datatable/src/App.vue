@@ -1,6 +1,12 @@
 <template>
     <div id="app">
-        <div style="padding-bottom: 40px;">
+        <div style="padding-bottom: 40px;" class="container">
+            <button @click="addItem()">add</button>
+            <button @click="addChild()">add child</button>
+            <button @click="removeItem()">remove</button>
+            <button @click="removeChild()">remove child</button>
+            <button @click="update()">update</button>
+
             <vue-datatable
                 :headers="headers"
                 :items="items"
@@ -13,13 +19,13 @@
                 ref="table"
                 @remove="log"
                 @details="log"
+                @update="log"
             >
                 <!-- select1 => :reduce="(item) => item.id" -->
                 <!-- select2 => :reduce="(item) => ({id: item.id, first_name:
                 item.first_name})" -->
             </vue-datatable>
-            <button @click="addItem()">add</button>
-            <button @click="removeItem()">remove</button>
+
             <footer class="footer">
                 Developing...
             </footer>
@@ -40,6 +46,7 @@
     letter-spacing: 2px;
 }
 </style>
+
 <script>
 import vueDatatable from "./vue-datatable/vue-datatable";
 import { rows, headers, subHeaders } from "@/fake-data/table-rows.js";
@@ -115,9 +122,6 @@ export default {
         log(a) {
             console.log(a);
         },
-        removeItem() {
-            this.$refs.table.remove(5);
-        },
         addItem() {
             this.$refs.table.add({
                 id: 110,
@@ -140,6 +144,35 @@ export default {
                     }
                 ]
             });
+        },
+        addChild() {
+            this.$refs.table.add(
+                {
+                    id: 6,
+                    make: "GMC",
+                    model: "Yukon Denali",
+                    modelYear: 2006
+                },
+                110
+            );
+        },
+        removeItem() {
+            this.$refs.table.remove(7);
+        },
+        removeChild() {
+            this.$refs.table.remove(27, 7);
+        },
+        update() {
+            this.$refs.table.update(
+                27,
+                {
+                    id: 27,
+                    make: "wwwwwwwwww",
+                    model: "wwwwwwwwwwwww",
+                    modelYear: 1002
+                },
+                7
+            );
         }
     }
 };

@@ -46,7 +46,7 @@
                                 :row="row"
                                 :rowIndex="index"
                                 :selectOptions="selectOptions"
-                                :key="index"
+                                :key="row.id"
                                 :collapseOptoins="collapseOptoins"
                                 :isCollapse="collapseOptoins.enable"
                                 :headerStatus="
@@ -57,7 +57,7 @@
                                         : 0
                                 "
                                 @changeCheckbox="changeCheckbox(row)"
-                                @remove="remove(index)"
+                                @remove="remove(row.row[uniqueId])"
                                 @details="details"
                             >
                                 <!-- selection input cells -->
@@ -141,8 +141,14 @@
                                             :items="
                                                 row.row[collapseOptoins.label]
                                             "
+                                            :key="row.id"
                                             :selectOptions="selectOptions"
                                             :classes="classes"
+                                            :ref="
+                                                'sub-table_row' +
+                                                    row.row[uniqueId]
+                                            "
+                                            :uniqueId="collapseOptoins.uniqueId"
                                             isChild
                                             :reduce="reduce"
                                             v-model="value"
@@ -170,7 +176,7 @@ import vueDatatableHeaderRow from "./vue-datatable-components/vue-datatable-head
 import vueDatatableBodyRow from "./vue-datatable-components/vue-datatable-body-row.vue";
 
 // getPropsObj this func combine props
-import { getPropsObj } from "@/utils";
+import { getPropsObj, createRow, warnIndexNotFound } from "@/utils";
 
 // default props
 const headerOptionsDefault = { label: "label", value: "value" };
@@ -181,11 +187,12 @@ const selectOptionsDefault = {
 const collapseOptoinsDefault = {
     enable: false,
     label: "children",
+    uniqueId: "id",
     headers: []
 };
+
 import { ref } from "@vue/composition-api";
 import _ from "lodash";
-import { v4 as uuidv4 } from "uuid";
 
 export default {
     name: "vue-datatable",
@@ -235,6 +242,10 @@ export default {
         classes: {
             type: String
         },
+        uniqueId: {
+            type: String,
+            default: () => "id"
+        },
         isChild: Boolean
     },
     setup(props) {
@@ -249,36 +260,17 @@ export default {
 
         const rows = ref(
             props.items.map(row => {
-                const formatedRow = {};
-                props.headers.forEach(head => {
-                    Object.assign(formatedRow, {
-                        [head[props.headerOptions.value]]:
-                            row[head[props.headerOptions.value]]
-                    });
-                });
-                const obj = ref({
-                    id: uuidv4(),
-                    row: { ...row },
-                    formatedRow,
-                    [props.selectOptions.label]:
-                        props.value.findIndex(val => {
-                            if (props.reduce(row) != null) {
-                                return _.isEqual(props.reduce(row), val);
-                            } else {
-                                return _.isEqual(row, val);
-                            }
-                        }) != -1,
-                    open: false
-                });
-                if (obj.value[props.selectOptions.label]) {
+                const { obj, selected } = createRow(row, props);
+                if (selected) {
                     headerStatus++;
                 }
-                return obj.value;
+                return obj;
             })
         );
         return { rows: rows.value, headerStatus };
     },
     methods: {
+        // TODO: fix action on closed table
         changeHeaderCheckbox(rows, val) {
             rows.forEach(row => {
                 row[this.selectOptions.label] = val;
@@ -322,43 +314,55 @@ export default {
             }
             this.$emit("input", this.value);
         },
-        add(row) {
-            const formatedRow = {};
-            this.headers.forEach(head => {
-                Object.assign(formatedRow, {
-                    [head[this.headerOptions.value]]:
-                        row[head[this.headerOptions.value]]
-                });
-            });
-            const obj = ref({
-                id: uuidv4(),
-                row: { ...row },
-                formatedRow,
-                [this.selectOptions.label]:
-                    this.value.findIndex(val => {
-                        if (this.reduce(row) != null) {
-                            return _.isEqual(this.reduce(row), val);
-                        } else {
-                            return _.isEqual(row, val);
-                        }
-                    }) != -1,
-                open: false
-            });
-            if (obj.value[this.selectOptions.label]) {
-                this.headerStatus++;
+        add(row, parentId) {
+            if (parentId && this.$refs["sub-table_row" + parentId])
+                this.$refs["sub-table_row" + parentId][0].add(row);
+            else {
+                const { obj, selected } = createRow(row, this.$props);
+                if (selected) {
+                    this.headerStatus++;
+                }
+                this.rows.unshift(obj);
             }
-            this.rows.unshift(obj.value);
         },
-        update() {},
-        remove(index) {
-            if (this.rows[index]) {
-                this.$emit("remove", this.rows[index]);
-                this.rows.splice(index, 1);
-                this.items.splice(index, 1);
-            } else {
-                console.warn(
-                    "item with index " + index + " is not exist in the array"
+        update(id, row, parentId) {
+            if (parentId && this.$refs["sub-table_row" + parentId])
+                this.$refs["sub-table_row" + parentId][0].update(id, row);
+            else {
+                const index = this.rows.findIndex(
+                    r => r.row[this.uniqueId] == id
                 );
+                if (index != -1) {
+                    let newRow;
+                    if (row.formatedRow) {
+                        newRow = row.row;
+                    } else {
+                        newRow = row;
+                    }
+                    const { obj } = createRow(newRow, this.$props);
+                    Object.assign(this.rows[index], obj);
+                    Object.assign(this.items[index], obj.row);
+
+                    this.$emit("update", this.rows[index]);
+                } else {
+                    warnIndexNotFound(id);
+                }
+            }
+        },
+        remove(id, parentId) {
+            if (parentId && this.$refs["sub-table_row" + parentId])
+                this.$refs["sub-table_row" + parentId][0].remove(id);
+            else {
+                const index = this.rows.findIndex(
+                    row => row.row[this.uniqueId] == id
+                );
+                if (index != -1) {
+                    this.$emit("remove", this.rows[index]);
+                    this.rows.splice(index, 1);
+                    this.items.splice(index, 1);
+                } else {
+                    warnIndexNotFound(id);
+                }
             }
         },
         details(row) {

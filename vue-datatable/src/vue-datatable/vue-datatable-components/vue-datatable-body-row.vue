@@ -26,7 +26,7 @@
             <td :key="index" v-if="key == 'actions'">
                 <slot name="row-td.actions" :tr="row">
                     <slot name="remove">
-                        <button @click="remove">
+                        <button @click="remove" style="margin-right: 4px">
                             X
                         </button>
                     </slot>

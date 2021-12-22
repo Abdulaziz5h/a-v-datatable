@@ -1,12 +1,11 @@
 {
   "name": "vue-datatable",
-  "version": "0.1.5",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "deploy": "deploy.sh"
+    "lint": "vue-cli-service lint"
   },
   "author": {
     "name": "Abdulaziz",
@@ -27,7 +26,8 @@
     "vue-datatable",
     "selection-table",
     "selection",
-    "select"
+    "collapsable-table",
+    "collapsable"
   ],
   "dependencies": {
     "@vue/composition-api": "^1.0.4",
