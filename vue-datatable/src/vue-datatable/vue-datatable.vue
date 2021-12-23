@@ -270,7 +270,6 @@ export default {
         return { rows: rows.value, headerStatus };
     },
     methods: {
-        // TODO: fix action on closed table
         changeHeaderCheckbox(rows, val) {
             rows.forEach(row => {
                 row[this.selectOptions.label] = val;
@@ -315,20 +314,62 @@ export default {
             this.$emit("input", this.value);
         },
         add(row, parentId) {
-            if (parentId && this.$refs["sub-table_row" + parentId])
-                this.$refs["sub-table_row" + parentId][0].add(row);
-            else {
+            if (this.collapseOptoins.enable && parentId) {
+                const index = this.rows.findIndex(
+                    r => r.row[this.uniqueId] == parentId
+                );
+                if (index != -1) {
+                    if (this.rows[index].open) {
+                        this.$refs["sub-table_row" + parentId][0].add(row);
+                    } else {
+                        this.items[index][this.collapseOptoins.label].unshift(
+                            row
+                        );
+                    }
+                } else {
+                    warnIndexNotFound(parentId);
+                }
+            } else {
                 const { obj, selected } = createRow(row, this.$props);
                 if (selected) {
                     this.headerStatus++;
                 }
+                this.items.unshift(row);
                 this.rows.unshift(obj);
             }
         },
         update(id, row, parentId) {
-            if (parentId && this.$refs["sub-table_row" + parentId])
-                this.$refs["sub-table_row" + parentId][0].update(id, row);
-            else {
+            if (this.collapseOptoins.enable && parentId) {
+                const index = this.rows.findIndex(
+                    r => r.row[this.uniqueId] == parentId
+                );
+                if (index != -1) {
+                    if (this.rows[index].open) {
+                        this.$refs["sub-table_row" + parentId][0].update(
+                            id,
+                            row
+                        );
+                    } else {
+                        const updatedRowIndex = this.items[index][
+                            this.collapseOptoins.label
+                        ].findIndex(
+                            r => r[this.collapseOptoins.uniqueId] == id
+                        );
+                        if (updatedRowIndex != -1) {
+                            Object.assign(
+                                this.items[index][this.collapseOptoins.label][
+                                    updatedRowIndex
+                                ],
+                                row
+                            );
+                        } else {
+                            warnIndexNotFound(id);
+                        }
+                    }
+                } else {
+                    warnIndexNotFound(parentId);
+                }
+            } else {
                 const index = this.rows.findIndex(
                     r => r.row[this.uniqueId] == id
                 );
@@ -350,9 +391,31 @@ export default {
             }
         },
         remove(id, parentId) {
-            if (parentId && this.$refs["sub-table_row" + parentId])
-                this.$refs["sub-table_row" + parentId][0].remove(id);
-            else {
+            if (this.collapseOptoins.enable && parentId) {
+                const index = this.rows.findIndex(
+                    r => r.row[this.uniqueId] == parentId
+                );
+                if (index != -1) {
+                    if (this.rows[index].open) {
+                        this.$refs["sub-table_row" + parentId][0].remove(id);
+                    } else {
+                        const itemIndex = this.items[index][
+                            this.collapseOptoins.label
+                        ].findIndex(
+                            r => r[this.collapseOptoins.uniqueId] == id
+                        );
+                        if (itemIndex != -1) {
+                            this.items[index][
+                                this.collapseOptoins.label
+                            ].splice(itemIndex, 1);
+                        } else {
+                            warnIndexNotFound(id);
+                        }
+                    }
+                } else {
+                    warnIndexNotFound(parentId);
+                }
+            } else {
                 const index = this.rows.findIndex(
                     row => row.row[this.uniqueId] == id
                 );
