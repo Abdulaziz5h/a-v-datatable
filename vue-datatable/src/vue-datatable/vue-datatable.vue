@@ -192,7 +192,7 @@ const collapseOptoinsDefault = {
 };
 
 import { ref } from "@vue/composition-api";
-import _ from "lodash";
+import { isEqual } from "lodash";
 
 export default {
     name: "vue-datatable",
@@ -279,9 +279,9 @@ export default {
         changeCheckbox(row, is) {
             const index = this.value.findIndex(val => {
                 if (this.reduce(row.row) != null) {
-                    return _.isEqual(this.reduce(row.row), val);
+                    return isEqual(this.reduce(row.row), val);
                 } else {
-                    return _.isEqual(row.row, val);
+                    return isEqual(row.row, val);
                 }
             });
             if (is === undefined) {
@@ -327,6 +327,7 @@ export default {
                         );
                     }
                 } else {
+                    this.$emit("lostId", parentId);
                     warnIndexNotFound(parentId);
                 }
             } else {
@@ -363,10 +364,12 @@ export default {
                                 row
                             );
                         } else {
+                            this.$emit("lostId", id);
                             warnIndexNotFound(id);
                         }
                     }
                 } else {
+                    this.$emit("lostId", parentId);
                     warnIndexNotFound(parentId);
                 }
             } else {
@@ -386,6 +389,7 @@ export default {
 
                     this.$emit("update", this.rows[index]);
                 } else {
+                    this.$emit("lostId", id);
                     warnIndexNotFound(id);
                 }
             }
@@ -409,10 +413,12 @@ export default {
                                 this.collapseOptoins.label
                             ].splice(itemIndex, 1);
                         } else {
+                            this.$emit("lostId", id);
                             warnIndexNotFound(id);
                         }
                     }
                 } else {
+                    this.$emit("lostId", parentId);
                     warnIndexNotFound(parentId);
                 }
             } else {
@@ -424,6 +430,7 @@ export default {
                     this.rows.splice(index, 1);
                     this.items.splice(index, 1);
                 } else {
+                    this.$emit("lostId", id);
                     warnIndexNotFound(id);
                 }
             }
@@ -434,3 +441,6 @@ export default {
     }
 };
 </script>
+<style lang="scss">
+@import "@/assets/main.scss";
+</style>

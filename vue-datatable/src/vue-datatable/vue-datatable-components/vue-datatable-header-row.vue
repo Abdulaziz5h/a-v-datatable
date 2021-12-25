@@ -66,7 +66,7 @@ export default {
     .bar {
         position: absolute;
         top: 8px;
-        left: 9px;
+        left: 6px;
         width: 9px;
         height: 3px;
         background: #212121;

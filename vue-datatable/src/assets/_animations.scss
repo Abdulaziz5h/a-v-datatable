@@ -1,15 +1,16 @@
-
 .slide-enter-active,
 .slide-leave-active {
-     transition: .5s;
+    transition: 0.5s;
 }
- 
- .slide-enter-to, .slide-leave {
+
+.slide-enter-to,
+.slide-leave {
     max-height: 50vh;
     overflow: hidden;
- }
- 
- .slide-enter, .slide-leave-to {
-     max-height: 0;
-     overflow: hidden;
+}
+
+.slide-enter,
+.slide-leave-to {
+    max-height: 0;
+    overflow: hidden;
 }

@@ -10,17 +10,18 @@
             <vue-datatable
                 :headers="headers"
                 :items="items"
+                classes="borderd cell-borderd striped"
                 :headerOptions="headerOptions"
                 :selectOptions="selectOptions"
-                :collapseOptoins="collapseOptoins"
                 v-model="selected1"
-                classes="borderd cell-borderd striped"
                 :reduce="item => item.id"
                 ref="table"
                 @remove="log"
                 @details="log"
                 @update="log"
+                @lostId="log"
             >
+                <!-- :collapseOptoins="collapseOptoins" -->
                 <!-- select1 => :reduce="(item) => item.id" -->
                 <!-- select2 => :reduce="(item) => ({id: item.id, first_name:
                 item.first_name})" -->

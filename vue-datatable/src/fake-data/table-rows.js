@@ -245,7 +245,22 @@ export const rows = [
         ]
     }
 ];
-
+// export const rows = [
+//     {
+//         id: 1,
+//         name: "Leanne Graham",
+//         username: "Bret",
+//         email: "Sincere@april.biz",
+//         phone: "1-770-736-8031 x56442"
+//     },
+//     {
+//         id: 2,
+//         name: "Ervin Howell",
+//         username: "Antonette",
+//         email: "Shanna@melissa.tv",
+//         phone: "010-692-6593 x09125"
+//     }
+// ];
 export const headers = [
     {
         label: "first name",
@@ -267,6 +282,22 @@ export const headers = [
         label: "actions",
         value: "actions"
     }
+    // {
+    //     label: "name",
+    //     value: "name"
+    // },
+    // {
+    //     label: "username",
+    //     value: "username"
+    // },
+    // {
+    //     label: "E-mail",
+    //     value: "email"
+    // },
+    // {
+    //     label: "phone number",
+    //     value: "phone"
+    // }
 ];
 
 export const subHeaders = [

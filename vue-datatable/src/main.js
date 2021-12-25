@@ -3,7 +3,7 @@ import App from "./App.vue";
 import VueCompositionAPI from "@vue/composition-api";
 
 Vue.use(VueCompositionAPI);
-require("./assets/main.scss");
+require("./assets/global.scss");
 Vue.config.productionTip = false;
 
 new Vue({

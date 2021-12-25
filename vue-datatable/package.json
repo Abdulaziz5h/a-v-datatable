@@ -1,71 +1,77 @@
 {
-  "name": "vue-datatable",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
-  },
-  "author": {
-    "name": "Abdulaziz",
-    "email": "ite.abdo.sh.crafter.front@gmail.com"
-  },
-  "bugs": {
-    "url": "https://github.com/Abdulaziz5h/vue-datatable/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Abdulaziz5h/vue-datatable.git"
-  },
-  "keywords": [
-    "vue",
-    "vuejs",
-    "table",
-    "datatable",
-    "vue-datatable",
-    "selection-table",
-    "selection",
-    "collapsable-table",
-    "collapsable"
-  ],
-  "dependencies": {
-    "@vue/composition-api": "^1.0.4",
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-vue": "^6.2.2",
-    "node-sass": "^4.12.0",
-    "prettier": "^1.19.1",
-    "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
+    "name": "vue-datatable",
+    "version": "0.0.1",
+    "private": false,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "build-library": "vue-cli-service build --target lib --name vue-datatable ./src/install.js",
+        "lint": "vue-cli-service lint"
     },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended",
-      "@vue/prettier"
+    "author": {
+        "name": "Abdulaziz Shahrour",
+        "email": "ite.abdo.sh.crafter.front@gmail.com"
+    },
+    "bugs": {
+        "url": "https://github.com/Abdulaziz5h/vue-datatable/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Abdulaziz5h/vue-datatable.git"
+    },
+    "keywords": [
+        "vue",
+        "vuejs",
+        "table",
+        "datatable",
+        "vue-datatable",
+        "selection-table",
+        "selection",
+        "collapsable-table",
+        "collapsable"
     ],
-    "parserOptions": {
-      "parser": "babel-eslint"
+    "files": [
+        "dist/*"
+    ],
+    "license": "MIT",
+    "main": ".dist/vue-datatable.common.js",
+    "dependencies": {
+        "@vue/composition-api": "^1.0.4",
+        "core-js": "^3.6.5",
+        "vue": "^2.6.11"
     },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "~4.5.0",
+        "@vue/cli-plugin-eslint": "~4.5.0",
+        "@vue/cli-service": "~4.5.0",
+        "@vue/eslint-config-prettier": "^6.0.0",
+        "babel-eslint": "^10.1.0",
+        "eslint": "^6.7.2",
+        "eslint-plugin-prettier": "^3.1.3",
+        "eslint-plugin-vue": "^6.2.2",
+        "node-sass": "^4.12.0",
+        "prettier": "^1.19.1",
+        "sass-loader": "^8.0.2",
+        "vue-template-compiler": "^2.6.11"
+    },
+    "eslintConfig": {
+        "root": true,
+        "env": {
+            "node": true
+        },
+        "extends": [
+            "plugin:vue/essential",
+            "eslint:recommended",
+            "@vue/prettier"
+        ],
+        "parserOptions": {
+            "parser": "babel-eslint"
+        },
+        "rules": {}
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not dead"
+    ]
 }
