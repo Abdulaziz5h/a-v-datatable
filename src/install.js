@@ -1,14 +1,10 @@
-import vueDatatable from "./vue-datatable/vue-datatable.vue";
+import component from "./a-v-datatable/a-v-datatable.vue";
 
-const vueDatatablePlugin = {
+const aVDatatablePlugin = {
     install(Vue) {
-        Vue.component("vue-datatable", vueDatatable);
+        Vue.component("a-v-datatable", component);
     }
 };
 
-// Automatic installation if Vue has been added to the global scope.
-if (typeof window !== "undefined" && window.Vue) {
-    window.Vue.use(vueDatatablePlugin);
-}
-
-export default vueDatatablePlugin;
+export default aVDatatablePlugin;
+export const aVDatatable = component;

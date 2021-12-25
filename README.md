@@ -1,16 +1,14 @@
-# vue-datatable
+# a-v-datatable
 I found more app new huge work table so I decide to build lib with vue.js
-
-### [Demo](https://abdulaziz5h.github.io/vue-datatable/)
 
 ```html
 <template>
-  <vue-datatable :headers="headers" :items="items">
-  </vue-datatable>
+  <a-v-datatable :headers="headers" :items="items">
+  </a-v-datatable>
 </template>
 
 <script>
-import vueDatatable from "./vue-datatable/vue-datatable";
+import vueDatatable from "./a-v-datatable/a-v-datatable";
 export default {
     components: {
         vueDatatable

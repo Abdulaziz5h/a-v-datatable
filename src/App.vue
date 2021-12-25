@@ -7,7 +7,7 @@
             <button @click="removeChild()">remove child</button>
             <button @click="update()">update</button>
 
-            <vue-datatable
+            <a-v-datatable
                 :headers="headers"
                 :items="items"
                 classes="borderd cell-borderd striped"
@@ -25,7 +25,7 @@
                 <!-- select1 => :reduce="(item) => item.id" -->
                 <!-- select2 => :reduce="(item) => ({id: item.id, first_name:
                 item.first_name})" -->
-            </vue-datatable>
+            </a-v-datatable>
 
             <footer class="footer">
                 Developing...
@@ -49,12 +49,12 @@
 </style>
 
 <script>
-import vueDatatable from "./vue-datatable/vue-datatable";
+import aVDatatable from "./a-v-datatable/a-v-datatable.vue";
 import { rows, headers, subHeaders } from "@/fake-data/table-rows.js";
 export default {
     name: "App",
     components: {
-        vueDatatable
+        aVDatatable
     },
     data() {
         return {

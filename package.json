@@ -1,11 +1,11 @@
 {
-    "name": "vue-datatable",
-    "version": "0.0.1",
+    "name": "a-v-datatable",
+    "version": "1.0.1",
     "private": false,
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "build-library": "vue-cli-service build --target lib --name vue-datatable ./src/install.js",
+        "build-library": "vue-cli-service build --target lib --name a-v-datatable ./src/install.js",
         "lint": "vue-cli-service lint"
     },
     "author": {
@@ -13,17 +13,18 @@
         "email": "ite.abdo.sh.crafter.front@gmail.com"
     },
     "bugs": {
-        "url": "https://github.com/Abdulaziz5h/vue-datatable/issues"
+        "url": "https://github.com/Abdulaziz5h/a-v-datatable/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Abdulaziz5h/vue-datatable.git"
+        "url": "git+https://github.com/Abdulaziz5h/a-v-datatable.git"
     },
     "keywords": [
         "vue",
         "vuejs",
         "table",
         "datatable",
+        "a-v-datatable",
         "vue-datatable",
         "selection-table",
         "selection",
@@ -34,7 +35,7 @@
         "dist/*"
     ],
     "license": "MIT",
-    "main": ".dist/vue-datatable.common.js",
+    "main": ".dist/a-v-datatable.common.js",
     "dependencies": {
         "@vue/composition-api": "^1.0.4",
         "core-js": "^3.6.5",

@@ -3,7 +3,7 @@
         <table class="vc__table" border="0" cellspacing="0" cellpadding="0">
             <thead class="vc__table__thead">
                 <slot name="header">
-                    <vue-datatable-header-row
+                    <a-v-datatable-header-row
                         :row="headers"
                         :label="headerOptions.label"
                         :value="headerOptions.value"
@@ -34,14 +34,14 @@
                                 :label="th[headerOptions.label]"
                             ></slot>
                         </template>
-                    </vue-datatable-header-row>
+                    </a-v-datatable-header-row>
                 </slot>
             </thead>
             <transition name="slide">
                 <tbody v-if="rows && rows.length" class="vc__table__tbody">
                     <slot name="body">
                         <template v-for="(row, index) in rows">
-                            <vue-datatable-body-row
+                            <a-v-datatable-body-row
                                 :headerOptions="headerOptions"
                                 :row="row"
                                 :rowIndex="index"
@@ -118,7 +118,7 @@
                                     ></slot>
                                 </template>
                                 <!-- / default rows rows -->
-                            </vue-datatable-body-row>
+                            </a-v-datatable-body-row>
                             <td
                                 colspan="100%"
                                 v-if="row.row[collapseOptoins.label]"
@@ -135,7 +135,7 @@
                                                 row.open
                                         "
                                     >
-                                        <vue-datatable
+                                        <a-v-datatable
                                             :headers="collapseOptoins.headers"
                                             :headerOptions="headerOptions"
                                             :items="
@@ -154,7 +154,7 @@
                                             v-model="value"
                                             @details="details"
                                         >
-                                        </vue-datatable>
+                                        </a-v-datatable>
                                     </div>
                                 </transition>
                             </td>
@@ -172,8 +172,8 @@
     </div>
 </template>
 <script>
-import vueDatatableHeaderRow from "./vue-datatable-components/vue-datatable-header-row";
-import vueDatatableBodyRow from "./vue-datatable-components/vue-datatable-body-row.vue";
+import aVDatatableHeaderRow from "./a-v-datatable-components/a-v-datatable-header-row";
+import aVDatatableBodyRow from "./a-v-datatable-components/a-v-datatable-body-row.vue";
 
 // getPropsObj this func combine props
 import { getPropsObj, createRow, warnIndexNotFound } from "@/utils";
@@ -192,13 +192,13 @@ const collapseOptoinsDefault = {
 };
 
 import { ref } from "@vue/composition-api";
-import { isEqual } from "lodash";
+import { isEqual } from "lodash/core";
 
 export default {
-    name: "vue-datatable",
+    name: "a-v-datatable",
     components: {
-        vueDatatableHeaderRow,
-        vueDatatableBodyRow
+        aVDatatableHeaderRow,
+        aVDatatableBodyRow
     },
     props: {
         // table header row
