@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import _ from "lodash";
-import { ref } from "@vue/composition-api";
+import { isEqual } from "lodash";
 
 export function getPropsObj(propName, propNameDefault) {
     Object.keys(propNameDefault).forEach(defKey => {
@@ -16,21 +15,36 @@ export function createRow(row, props) {
                 row[head[props.headerOptions.value]]
         });
     });
-    const obj = ref({
+    // const obj = ref({
+    //     id: uuidv4(),
+    //     row: { ...row },
+    //     formatedRow,
+    //     [props.selectOptions.label]:
+    //         props.value.findIndex(val => {
+    //             if (props.reduce(row) != null) {
+    //                 return _.isEqual(props.reduce(row), val);
+    //             } else {
+    //                 return _.isEqual(row, val);
+    //             }
+    //         }) != -1,
+    //     open: false
+    // });
+    // return { obj: obj.value, selected: obj.value[props.selectOptions.label] };
+    const obj = {
         id: uuidv4(),
         row: { ...row },
         formatedRow,
         [props.selectOptions.label]:
             props.value.findIndex(val => {
                 if (props.reduce(row) != null) {
-                    return _.isEqual(props.reduce(row), val);
+                    return isEqual(props.reduce(row), val);
                 } else {
-                    return _.isEqual(row, val);
+                    return isEqual(row, val);
                 }
             }) != -1,
         open: false
-    });
-    return { obj: obj.value, selected: obj.value[props.selectOptions.label] };
+    };
+    return { obj, selected: obj[props.selectOptions.label] };
 }
 export function warnIndexNotFound(id) {
     console.warn("item with uniqueId " + id + " is not exist in the array");

@@ -191,7 +191,6 @@ const collapseOptoinsDefault = {
     headers: []
 };
 
-import { ref } from "@vue/composition-api";
 import { isEqual } from "lodash/core";
 
 export default {
@@ -248,8 +247,12 @@ export default {
         },
         isChild: Boolean
     },
-    setup(props) {
-        let headerStatus = 0;
+    data: () => ({
+        headerStatus: 0,
+        rows: null
+    }),
+    created() {
+        const props = this.$props;
         // set default headers value if no collapse option headers was implement
         collapseOptoinsDefault.headers = props.headers;
 
@@ -258,17 +261,34 @@ export default {
         getPropsObj(props.selectOptions, selectOptionsDefault);
         getPropsObj(props.collapseOptoins, collapseOptoinsDefault);
 
-        const rows = ref(
-            props.items.map(row => {
-                const { obj, selected } = createRow(row, props);
-                if (selected) {
-                    headerStatus++;
-                }
-                return obj;
-            })
-        );
-        return { rows: rows.value, headerStatus };
+        this.rows = props.items.map(row => {
+            const { obj, selected } = createRow(row, props);
+            if (selected) {
+                this.headerStatus++;
+            }
+            return obj;
+        });
     },
+    // setup(props) {
+    //     // set default headers value if no collapse option headers was implement
+    //     collapseOptoinsDefault.headers = props.headers;
+
+    //     // combine default props with enterd props
+    //     getPropsObj(props.headerOptions, headerOptionsDefault);
+    //     getPropsObj(props.selectOptions, selectOptionsDefault);
+    //     getPropsObj(props.collapseOptoins, collapseOptoinsDefault);
+
+    //     const rows = ref(
+    //         props.items.map(row => {
+    //             const { obj, selected } = createRow(row, props);
+    //             if (selected) {
+    //                 this.headerStatus++;
+    //             }
+    //             return obj;
+    //         })
+    //     );
+    //     return { rows: rows.value };
+    // },
     methods: {
         changeHeaderCheckbox(rows, val) {
             rows.forEach(row => {

@@ -37,7 +37,6 @@
     "license": "MIT",
     "main": ".dist/a-v-datatable.common.js",
     "dependencies": {
-        "@vue/composition-api": "^1.0.4",
         "core-js": "^3.6.5",
         "vue": "^2.6.11"
     },
