@@ -34,14 +34,15 @@ export function createRow(row, props) {
         id: uuidv4(),
         row: { ...row },
         formatedRow,
-        [props.selectOptions.label]:
-            props.value.findIndex(val => {
-                if (props.reduce(row) != null) {
-                    return isEqual(props.reduce(row), val);
-                } else {
-                    return isEqual(row, val);
-                }
-            }) != -1,
+        [props.selectOptions.label]: !props.value.findIndex
+            ? false
+            : props.value.findIndex(val => {
+                  if (props.reduce(row) != null) {
+                      return isEqual(props.reduce(row), val);
+                  } else {
+                      return isEqual(row, val);
+                  }
+              }) != -1,
         open: false
     };
     return { obj, selected: obj[props.selectOptions.label] };

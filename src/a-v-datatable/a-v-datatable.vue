@@ -149,9 +149,8 @@
                                                     row.row[uniqueId]
                                             "
                                             :uniqueId="collapseOptoins.uniqueId"
-                                            isChild
                                             :reduce="reduce"
-                                            v-model="value"
+                                            v-model="value[row.row[uniqueId]]"
                                             @details="details"
                                         >
                                         </a-v-datatable>
@@ -182,6 +181,7 @@ import { getPropsObj, createRow, warnIndexNotFound } from "@/utils";
 const headerOptionsDefault = { label: "label", value: "value" };
 const selectOptionsDefault = {
     enable: false,
+    group: false,
     label: "selected"
 };
 const collapseOptoinsDefault = {
@@ -223,7 +223,7 @@ export default {
             default: () => selectOptionsDefault
         },
         value: {
-            type: Array,
+            type: null,
             default: () => []
         },
         reduce: {
@@ -244,8 +244,7 @@ export default {
         uniqueId: {
             type: String,
             default: () => "id"
-        },
-        isChild: Boolean
+        }
     },
     data: () => ({
         headerStatus: 0,

@@ -65,6 +65,7 @@ export default {
             },
             items: rows,
             selectOptions: {
+                group: true,
                 enable: true
             },
             collapseOptoins: {
@@ -111,7 +112,8 @@ export default {
             //         ]
             //     }
             // ],
-            selected1: [24, 26, 10, 30]
+            // selected1: [24, 26, 10, 30]
+            selected1: { 6: [24, 26], 3: [10], 8: [30] }
             // selected2: [
             // { id: 8, first_name: "Marjy" },
             // { id: 6, first_name: "Abbey" },
