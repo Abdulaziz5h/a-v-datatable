@@ -214,7 +214,8 @@ export default {
         // table body rows
         items: {
             type: Array,
-            required: true
+            required: true,
+            default: () => []
         },
 
         // Select Options

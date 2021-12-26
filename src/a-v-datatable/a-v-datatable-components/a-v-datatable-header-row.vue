@@ -63,10 +63,13 @@ export default {
     position: relative;
     width: 26px;
     margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .bar {
         position: absolute;
         top: 8px;
-        left: 6px;
+        left: 9px;
         width: 9px;
         height: 3px;
         background: #212121;

@@ -26,16 +26,17 @@
         "datatable",
         "a-v-datatable",
         "vue-datatable",
-        "selection-table",
+        "select table",
+        "selection table",
         "selection",
-        "collapsable-table",
-        "collapsable"
+        "collapsible table",
+        "collapsible"
     ],
     "files": [
         "dist/*"
     ],
     "license": "MIT",
-    "main": ".dist/a-v-datatable.common.js",
+    "main": "./dist/a-v-datatable.common.js",
     "dependencies": {
         "core-js": "^3.6.5",
         "vue": "^2.6.11"
