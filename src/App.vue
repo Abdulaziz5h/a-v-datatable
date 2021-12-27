@@ -12,9 +12,9 @@
                 :items="items"
                 classes="borderd cell-borderd striped"
                 :selectOptions="selectOptions"
-                :reduce="item => item.id"
                 v-model="selected"
             >
+                <!-- :reduce="item => item.id" -->
                 <!-- :headerOptions="headerOptions"
                 :collapseOptoins="collapseOptoins"
                 ref="table"
@@ -72,7 +72,7 @@ export default {
                 label: "cars",
                 headers: subHeaders
             },
-            selected: [2, 5, 6],
+            selected: [],
             // selected: [
             //     {
             //         id: 8,

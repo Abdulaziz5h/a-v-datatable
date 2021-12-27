@@ -62,13 +62,14 @@ export default {
 .checkbox-container {
     position: relative;
     width: 26px;
+    height: 20px;
     margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     .bar {
         position: absolute;
-        top: 8px;
+        top: 9px;
         left: 9px;
         width: 9px;
         height: 3px;

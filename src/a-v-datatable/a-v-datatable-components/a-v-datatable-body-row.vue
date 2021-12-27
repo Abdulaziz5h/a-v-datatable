@@ -10,11 +10,13 @@
             class="selection"
         >
             <slot name="body-select-input">
-                <input
-                    type="checkbox"
-                    v-model="row[selectOptions.label]"
-                    @input="selectRow(row, $event)"
-                />
+                <div class="selection-container">
+                    <input
+                        type="checkbox"
+                        v-model="row[selectOptions.label]"
+                        @input="selectRow(row, $event)"
+                    />
+                </div>
             </slot>
         </td>
         <slot

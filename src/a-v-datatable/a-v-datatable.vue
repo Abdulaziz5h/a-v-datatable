@@ -191,7 +191,7 @@ const collapseOptoinsDefault = {
     headers: []
 };
 
-import { isEqual } from "lodash/core";
+import { isEqual } from "lodash";
 
 export default {
     name: "a-v-datatable",
@@ -269,26 +269,6 @@ export default {
             return obj;
         });
     },
-    // setup(props) {
-    //     // set default headers value if no collapse option headers was implement
-    //     collapseOptoinsDefault.headers = props.headers;
-
-    //     // combine default props with enterd props
-    //     getPropsObj(props.headerOptions, headerOptionsDefault);
-    //     getPropsObj(props.selectOptions, selectOptionsDefault);
-    //     getPropsObj(props.collapseOptoins, collapseOptoinsDefault);
-
-    //     const rows = ref(
-    //         props.items.map(row => {
-    //             const { obj, selected } = createRow(row, props);
-    //             if (selected) {
-    //                 this.headerStatus++;
-    //             }
-    //             return obj;
-    //         })
-    //     );
-    //     return { rows: rows.value };
-    // },
     methods: {
         changeHeaderCheckbox(rows, val) {
             rows.forEach(row => {

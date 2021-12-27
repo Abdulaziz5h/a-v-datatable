@@ -12,9 +12,9 @@ module.exports = {
             path: path.resolve(__dirname, "dist")
         }
     },
-    // chainWebpack: config => {
-    //     config.entryPoints.delete("app");
-    //     config.entry("main").clear();
-    //     config.entry("main").add("./src/install.js");
-    // }
+    chainWebpack: config => {
+        config.entryPoints.delete("app");
+        config.entry("main").clear();
+        config.entry("main").add("./src/install.js");
+    }
 };
