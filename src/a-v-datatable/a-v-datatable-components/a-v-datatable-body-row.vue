@@ -51,7 +51,7 @@
             :key="row.length"
             class="colapse-icon"
         >
-            <div class="icon">
+            <div class="colapse-icon-i">
                 <span :class="{ colapsed: row.open }">
                     <slot name="collapse-icon"
                         ><span style="height: 10px; display: block;"

@@ -11,12 +11,13 @@
                 :headers="headers"
                 :items="items"
                 classes="borderd cell-borderd striped"
-                :selectOptions="selectOptions"
                 v-model="selected"
+                :collapseOptoins="collapseOptoins"
+                :selectOptions="selectOptions"
             >
                 <!-- :reduce="item => item.id" -->
-                <!-- :headerOptions="headerOptions"
-                :collapseOptoins="collapseOptoins"
+                <!-- 
+                :headerOptions="headerOptions"
                 ref="table"
                 @remove="log"
                 @details="log"
@@ -26,7 +27,9 @@
                 <!-- select2 => :reduce="(item) => ({id: item.id, first_name:
                 item.first_name})" -->
             </a-v-datatable>
-            {{ selected }}
+            <pre>
+                {{ selected }}
+            </pre>
             <footer class="footer">
                 Developing...
             </footer>
@@ -175,6 +178,11 @@ export default {
                 },
                 7
             );
+        }
+    },
+    watch: {
+        selected(s) {
+            console.log(s);
         }
     }
 };

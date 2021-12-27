@@ -150,8 +150,22 @@
                                             "
                                             :uniqueId="collapseOptoins.uniqueId"
                                             :reduce="reduce"
-                                            v-model="value[row.row[uniqueId]]"
+                                            :value="
+                                                value.findIndex
+                                                    ? value
+                                                    : value[row.row[uniqueId]]
+                                            "
+                                            @input="
+                                                value.findIndex
+                                                    ? (value = $event)
+                                                    : $set(
+                                                          value,
+                                                          row.row[uniqueId],
+                                                          $event
+                                                      )
+                                            "
                                             @details="details"
+                                            :isChild="true"
                                         >
                                         </a-v-datatable>
                                     </div>
@@ -181,7 +195,6 @@ import { getPropsObj, createRow, warnIndexNotFound } from "@/utils";
 const headerOptionsDefault = { label: "label", value: "value" };
 const selectOptionsDefault = {
     enable: false,
-    group: false,
     label: "selected"
 };
 const collapseOptoinsDefault = {
