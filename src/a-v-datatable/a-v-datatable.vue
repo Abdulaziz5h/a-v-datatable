@@ -167,6 +167,120 @@
                                             @details="details"
                                             :isChild="true"
                                         >
+                                            <!-- headers slots -->
+                                            <template slot="header">
+                                                <slot
+                                                    :name="
+                                                        collapseOptoins.label +
+                                                            '.header'
+                                                    "
+                                                >
+                                                </slot>
+                                            </template>
+                                            <template
+                                                slot="header-th"
+                                                slot-scope="{ th }"
+                                            >
+                                                <slot
+                                                    :name="
+                                                        collapseOptoins.label +
+                                                            '.header-th'
+                                                    "
+                                                    :th="th"
+                                                ></slot>
+                                            </template>
+                                            <template
+                                                v-for="th in collapseOptoins.headers"
+                                                :slot="
+                                                    'header-th.' +
+                                                        th[headerOptions.value]
+                                                "
+                                            >
+                                                <slot
+                                                    :name="
+                                                        collapseOptoins.label +
+                                                            '.header-th.' +
+                                                            th[
+                                                                headerOptions
+                                                                    .value
+                                                            ]
+                                                    "
+                                                    :th="th"
+                                                    :label="
+                                                        th[headerOptions.label]
+                                                    "
+                                                ></slot>
+                                            </template>
+                                            <template slot="body">
+                                                <slot
+                                                    :name="
+                                                        collapseOptoins.label +
+                                                            'body'
+                                                    "
+                                                >
+                                                </slot>
+                                            </template>
+                                            <!-- body slots -->
+                                            <!-- selection input cells -->
+                                            <template
+                                                slot="header-select-input"
+                                            >
+                                                <slot
+                                                    :name="
+                                                        collapseOptoins.label +
+                                                            'header-select-input'
+                                                    "
+                                                ></slot>
+                                            </template>
+                                            <template slot="body-select-input">
+                                                <slot
+                                                    :name="
+                                                        collapseOptoins.label +
+                                                            'body-select-input'
+                                                    "
+                                                    :row="row"
+                                                ></slot>
+                                            </template>
+                                            <template slot="collapse-icon">
+                                                <slot
+                                                    :name="
+                                                        collapseOptoins.label +
+                                                            'collapse-icon'
+                                                    "
+                                                ></slot>
+                                            </template>
+                                            <!-- / selection input cells -->
+                                            <!-- default rows rows -->
+                                            <template
+                                                slot="row-td"
+                                                slot-scope="{ value, argkey }"
+                                            >
+                                                <slot
+                                                    :name="
+                                                        collapseOptoins.label +
+                                                            'row-td'
+                                                    "
+                                                    :row="row"
+                                                    :value="value"
+                                                    :argkey="argkey"
+                                                ></slot>
+                                            </template>
+                                            <template
+                                                v-for="td in collapseOptoins.headers"
+                                                :slot="'row-td.' + td.value"
+                                                slot-scope="{ value }"
+                                            >
+                                                <slot
+                                                    :name="
+                                                        collapseOptoins.label +
+                                                            '.row-td.' +
+                                                            td.value
+                                                    "
+                                                    :value="value"
+                                                    :row="row"
+                                                ></slot>
+                                            </template>
+                                            <!-- / default rows rows -->
                                         </a-v-datatable>
                                     </div>
                                 </transition>
@@ -230,7 +344,10 @@ export default {
             required: true,
             default: () => []
         },
-
+        uniqueId: {
+            type: String,
+            default: () => "id"
+        },
         // Select Options
         selectOptions: {
             type: Object,
@@ -254,10 +371,6 @@ export default {
         // styling props
         classes: {
             type: String
-        },
-        uniqueId: {
-            type: String,
-            default: () => "id"
         }
     },
     data: () => ({

@@ -38,21 +38,24 @@
                 }
             }
             .colapse-icon {
-                width: 26px;
-                min-width: 26px;
+                width: 36px;
+                min-width: 36px;
                 position: relative;
                 .colapse-icon-i {
-                    position: absolute;
                     height: 100%;
                     width: 100%;
-                    top: 0;
-                    left: 0;
+                    // position: absolute;
+                    // top: 0;
+                    // left: 0;
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     span {
-                        transform-origin: 50% 75%;
+                        // transform-origin: 50% 75%;
                         transition: all 0.4s linear;
+                        span {
+                            line-height: 1;
+                        }
                     }
                 }
                 .colapsed {

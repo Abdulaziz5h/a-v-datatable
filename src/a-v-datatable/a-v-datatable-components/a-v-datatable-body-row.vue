@@ -1,12 +1,7 @@
 <template>
     <tr class="vc__table__tr vc__tbody__tr">
         <td
-            v-if="
-                selectOptions.enable &&
-                    (!collapseOptoins.enable ||
-                        (collapseOptoins.enable &&
-                            !row.row[collapseOptoins.label]))
-            "
+            v-if="selectOptions.enable && !collapseOptoins.enable"
             class="selection"
         >
             <slot name="body-select-input">
@@ -47,7 +42,7 @@
         </slot>
         <td
             @click="change(row)"
-            v-if="isCollapse"
+            v-if="isCollapse && row.row[collapseOptoins.label]"
             :key="row.length"
             class="colapse-icon"
         >
@@ -60,6 +55,23 @@
                     >
                 </span>
             </div>
+        </td>
+        <td
+            v-else-if="
+                selectOptions.enable &&
+                    !(selectOptions.enable && !collapseOptoins.enable)
+            "
+            class="selection"
+        >
+            <slot name="body-select-input">
+                <div class="selection-container">
+                    <input
+                        type="checkbox"
+                        v-model="row[selectOptions.label]"
+                        @input="selectRow(row, $event)"
+                    />
+                </div>
+            </slot>
         </td>
     </tr>
 </template>

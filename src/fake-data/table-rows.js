@@ -44,7 +44,6 @@ export const rows = [
         last_name: "Headly",
         email: "dheadly1@usatoday.com",
         gender: "Male",
-        cars: []
     },
     {
         id: 3,
