@@ -4,7 +4,7 @@
             v-if="selectOptions.enable && !collapseOptoins.enable"
             class="selection"
         >
-            <slot name="body-select-input">
+            <slot name="body-select-input" :check="check">
                 <div class="selection-container">
                     <input
                         type="checkbox"
@@ -68,7 +68,7 @@
             "
             class="selection"
         >
-            <slot name="body-select-input">
+            <slot name="body-select-input" :check="check">
                 <div class="selection-container">
                     <input
                         type="checkbox"
@@ -92,6 +92,12 @@ export default {
         isCollapse: Boolean
     },
     methods: {
+        check() {
+            this.row[this.selectOptions.label] = !this.row[
+                this.selectOptions.label
+            ];
+            this.selectRow(this.row, this.row[this.selectOptions.label]);
+        },
         change(row) {
             row.open = !row.open;
         },

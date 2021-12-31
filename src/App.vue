@@ -16,12 +16,6 @@
                 :collapseOptoins="collapseOptoins"
                 @details="log"
             >
-                <template
-                    slot="cars.header-select-input"
-                    slot-scope="{ check }"
-                >
-                    <button @click="check">c</button>
-                </template>
                 <!-- 
                 :reduce="item => item.id"
                 :headerOptions="headerOptions"

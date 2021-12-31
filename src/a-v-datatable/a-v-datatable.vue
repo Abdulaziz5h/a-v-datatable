@@ -54,6 +54,13 @@
                             @remove="remove(row.row[uniqueId])"
                             @details="details"
                         >
+                            <template
+                                slot="body-select-input"
+                                slot-scope="{ check }"
+                            >
+                                <slot name="body-select-input" :check="check">
+                                </slot>
+                            </template>
                             <!-- tr = row -->
                             <template
                                 slot="row-td.actions"
@@ -202,6 +209,19 @@
                                         </template>
                                         <!-- body slots -->
                                         <!-- selection input cells -->
+                                        <template
+                                            slot="body-select-input"
+                                            slot-scope="{ check }"
+                                        >
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        '.body-select-input'
+                                                "
+                                                :check="check"
+                                            >
+                                            </slot>
+                                        </template>
                                         <template slot="collapse-icon">
                                             <slot
                                                 :name="
