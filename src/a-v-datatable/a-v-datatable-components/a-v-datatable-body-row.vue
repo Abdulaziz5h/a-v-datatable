@@ -4,7 +4,7 @@
             v-if="selectOptions.enable && !collapseOptoins.enable"
             class="selection"
         >
-            <slot name="body-select-input" :check="check">
+            <slot name="body-select-input" :row="row" :check="check">
                 <div class="selection-container">
                     <input
                         type="checkbox"
@@ -68,7 +68,7 @@
             "
             class="selection"
         >
-            <slot name="body-select-input" :check="check">
+            <slot name="body-select-input" :row="row" :check="check">
                 <div class="selection-container">
                     <input
                         type="checkbox"

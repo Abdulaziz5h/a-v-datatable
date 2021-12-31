@@ -4,7 +4,7 @@
             class="selection"
             v-if="selectOptions.enable && !collapseOptoins.enable"
         >
-            <slot name="header-select-input" :check="check">
+            <slot name="header-select-input" :row="row" :check="check">
                 <div class="checkbox-container">
                     <input type="checkbox" v-model="selectAll" />
                     <span class="bar" v-if="!headerStatus"></span>

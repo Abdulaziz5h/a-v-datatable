@@ -14,8 +14,15 @@
                         !headerStatus ? -1 : headerStatus == rows.length ? 1 : 0
                     "
                 >
-                    <template slot="header-select-input" slot-scope="{ check }">
-                        <slot name="header-select-input" :check="check"></slot>
+                    <template
+                        slot="header-select-input"
+                        slot-scope="{ row, check }"
+                    >
+                        <slot
+                            name="header-select-input"
+                            :row="row"
+                            :check="check"
+                        ></slot>
                     </template>
                     <template slot="header-th" slot-scope="{ th }">
                         <slot name="header-th" :th="th"></slot>
@@ -56,9 +63,13 @@
                         >
                             <template
                                 slot="body-select-input"
-                                slot-scope="{ check }"
+                                slot-scope="{ row, check }"
                             >
-                                <slot name="body-select-input" :check="check">
+                                <slot
+                                    name="body-select-input"
+                                    :row="row"
+                                    :check="check"
+                                >
                                 </slot>
                             </template>
                             <!-- tr = row -->
@@ -168,13 +179,14 @@
                                         <!-- headers slots -->
                                         <template
                                             slot="header-select-input"
-                                            slot-scope="{ check }"
+                                            slot-scope="{ row, check }"
                                         >
                                             <slot
                                                 :name="
                                                     collapseOptoins.label +
                                                         '.header-select-input'
                                                 "
+                                                :row="row"
                                                 :check="check"
                                             ></slot>
                                         </template>
@@ -211,13 +223,14 @@
                                         <!-- selection input cells -->
                                         <template
                                             slot="body-select-input"
-                                            slot-scope="{ check }"
+                                            slot-scope="{ row, check }"
                                         >
                                             <slot
                                                 :name="
                                                     collapseOptoins.label +
                                                         '.body-select-input'
                                                 "
+                                                :row="row"
                                                 :check="check"
                                             >
                                             </slot>
