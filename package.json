@@ -6,7 +6,7 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
-        "build-library": "TODO: remember to fix config vue-cli-service build --target lib --name a-v-datatable ./src/install.js"
+        "build-library": "vue-cli-service build --target lib --name a-v-datatable ./src/install.js"
     },
     "author": {
         "name": "Abdulaziz Shahrour",

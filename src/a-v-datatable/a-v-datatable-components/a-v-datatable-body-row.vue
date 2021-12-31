@@ -21,13 +21,18 @@
             :value="td"
         >
             <td :key="index" v-if="key == 'actions'">
-                <slot name="row-td.actions" :tr="row">
-                    <slot name="remove">
+                <slot
+                    name="row-td.actions"
+                    :remove="remove"
+                    :details="details"
+                    :tr="row"
+                >
+                    <slot name="remove" :remove="remove">
                         <button @click="remove" style="margin-right: 4px">
                             X
                         </button>
                     </slot>
-                    <slot name="details">
+                    <slot name="details" :details="details">
                         <button @click="details">
                             D
                         </button>

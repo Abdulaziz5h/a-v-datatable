@@ -61,14 +61,20 @@
                                     :row="row"
                                 ></slot>
                             </template>
-                            <template slot="row-td.actions" slot-scope="{ tr }">
-                                <!-- tr = row -->
-                                <template slot="remove">
-                                    <slot name="remove" :row="tr"></slot>
-                                </template>
-                                <template slot="details">
-                                    <slot name="details" :row="tr"></slot>
-                                </template>
+                            <!-- tr = row -->
+                            <template slot="remove" slot-scope="{ remove }">
+                                <slot
+                                    name="remove"
+                                    :remove="remove"
+                                    :row="tr"
+                                ></slot>
+                            </template>
+                            <template slot="details" slot-scope="{ details }">
+                                <slot
+                                    name="details"
+                                    :details="details"
+                                    :row="tr"
+                                ></slot>
                             </template>
                             <template slot="collapse-icon">
                                 <slot name="collapse-icon"></slot>
@@ -143,15 +149,6 @@
                                         :isChild="true"
                                     >
                                         <!-- headers slots -->
-                                        <template slot="header">
-                                            <slot
-                                                :name="
-                                                    collapseOptoins.label +
-                                                        '.header'
-                                                "
-                                            >
-                                            </slot>
-                                        </template>
                                         <template slot="header-select-input">
                                             <slot
                                                 :name="
@@ -188,15 +185,6 @@
                                                 :th="th"
                                                 :label="th[headerOptions.label]"
                                             ></slot>
-                                        </template>
-                                        <template slot="body">
-                                            <slot
-                                                :name="
-                                                    collapseOptoins.label +
-                                                        'body'
-                                                "
-                                            >
-                                            </slot>
                                         </template>
                                         <!-- body slots -->
                                         <!-- selection input cells -->
@@ -239,6 +227,32 @@
                                                 :row="row"
                                                 :value="value"
                                                 :argkey="argkey"
+                                            ></slot>
+                                        </template>
+                                        <template
+                                            slot="remove"
+                                            slot-scope="{ remove }"
+                                        >
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        'remove'
+                                                "
+                                                :remove="remove"
+                                                :row="tr"
+                                            ></slot>
+                                        </template>
+                                        <template
+                                            slot="details"
+                                            slot-scope="{ details }"
+                                        >
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        'details'
+                                                "
+                                                :details="details"
+                                                :row="tr"
                                             ></slot>
                                         </template>
                                         <template
