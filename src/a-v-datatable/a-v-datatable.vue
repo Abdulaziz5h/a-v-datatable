@@ -2,291 +2,266 @@
     <div class="vc__table-container" :class="classes">
         <table class="vc__table" border="0" cellspacing="0" cellpadding="0">
             <thead class="vc__table__thead">
-                <slot name="header">
-                    <a-v-datatable-header-row
-                        :row="headers"
-                        :label="headerOptions.label"
-                        :value="headerOptions.value"
-                        :collapseOptoins="collapseOptoins"
-                        :selectOptions="selectOptions"
-                        @changeHeaderCheckbox="
-                            changeHeaderCheckbox(rows, $event)
-                        "
-                        :isCollapse="collapseOptoins.enable"
-                        :headerStatus="
-                            !headerStatus
-                                ? -1
-                                : headerStatus == rows.length
-                                ? 1
-                                : 0
-                        "
+                <a-v-datatable-header-row
+                    :row="headers"
+                    :label="headerOptions.label"
+                    :value="headerOptions.value"
+                    :collapseOptoins="collapseOptoins"
+                    :selectOptions="selectOptions"
+                    @changeHeaderCheckbox="changeHeaderCheckbox(rows, $event)"
+                    :isCollapse="collapseOptoins.enable"
+                    :headerStatus="
+                        !headerStatus ? -1 : headerStatus == rows.length ? 1 : 0
+                    "
+                >
+                    <template slot="header-select-input">
+                        <slot name="header-select-input"></slot>
+                    </template>
+                    <template slot="header-th" slot-scope="{ th }">
+                        <slot name="header-th" :th="th"></slot>
+                    </template>
+                    <template
+                        v-for="th in headers"
+                        :slot="'header-th.' + th[headerOptions.value]"
                     >
-                        <template slot="header-th" slot-scope="{ th }">
-                            <slot name="header-th" :th="th"></slot>
-                        </template>
-                        <template
-                            v-for="th in headers"
-                            :slot="'header-th.' + th[headerOptions.value]"
-                        >
-                            <slot
-                                :name="'header-th.' + th[headerOptions.value]"
-                                :th="th"
-                                :label="th[headerOptions.label]"
-                            ></slot>
-                        </template>
-                    </a-v-datatable-header-row>
-                </slot>
+                        <slot
+                            :name="'header-th.' + th[headerOptions.value]"
+                            :th="th"
+                            :label="th[headerOptions.label]"
+                        ></slot>
+                    </template>
+                </a-v-datatable-header-row>
             </thead>
             <transition name="slide">
                 <tbody v-if="rows && rows.length" class="vc__table__tbody">
-                    <slot name="body">
-                        <template v-for="(row, index) in rows">
-                            <a-v-datatable-body-row
-                                :headerOptions="headerOptions"
-                                :row="row"
-                                :rowIndex="index"
-                                :selectOptions="selectOptions"
-                                :key="row.id"
-                                :collapseOptoins="collapseOptoins"
-                                :isCollapse="collapseOptoins.enable"
-                                :headerStatus="
-                                    !headerStatus
-                                        ? -1
-                                        : headerStatus == rows.length
-                                        ? 1
-                                        : 0
-                                "
-                                @changeCheckbox="changeCheckbox(row)"
-                                @remove="remove(row.row[uniqueId])"
-                                @details="details"
+                    <template v-for="(row, index) in rows">
+                        <a-v-datatable-body-row
+                            :headerOptions="headerOptions"
+                            :row="row"
+                            :rowIndex="index"
+                            :selectOptions="selectOptions"
+                            :key="row.id"
+                            :collapseOptoins="collapseOptoins"
+                            :isCollapse="collapseOptoins.enable"
+                            :headerStatus="
+                                !headerStatus
+                                    ? -1
+                                    : headerStatus == rows.length
+                                    ? 1
+                                    : 0
+                            "
+                            @changeCheckbox="changeCheckbox(row)"
+                            @remove="remove(row.row[uniqueId])"
+                            @details="details"
+                        >
+                            <!-- selection input cells -->
+                            <template slot="body-select-input">
+                                <slot
+                                    name="body-select-input"
+                                    :row="row"
+                                ></slot>
+                            </template>
+                            <template slot="row-td.actions" slot-scope="{ tr }">
+                                <!-- tr = row -->
+                                <template slot="remove">
+                                    <slot name="remove" :row="tr"></slot>
+                                </template>
+                                <template slot="details">
+                                    <slot name="details" :row="tr"></slot>
+                                </template>
+                            </template>
+                            <template slot="collapse-icon">
+                                <slot name="collapse-icon"></slot>
+                            </template>
+                            <!-- / selection input cells -->
+                            <!-- default rows rows -->
+                            <template
+                                slot="row-td"
+                                slot-scope="{ value, argkey }"
                             >
-                                <!-- selection input cells -->
-                                <template slot="header-select-input">
-                                    <slot name="header-select-input"></slot>
-                                </template>
-                                <template slot="body-select-input">
-                                    <slot
-                                        name="body-select-input"
-                                        :row="row"
-                                    ></slot>
-                                </template>
-                                <template
-                                    slot="row-td.actions"
-                                    slot-scope="{ tr }"
-                                >
-                                    <!-- tr = row -->
-                                    <slot name="row-td.actions" :row="tr">
-                                        <template slot="remove">
-                                            <slot
-                                                name="remove"
-                                                :row="tr"
-                                            ></slot>
-                                        </template>
-                                        <template slot="details">
-                                            <slot
-                                                name="details"
-                                                :row="tr"
-                                            ></slot>
-                                        </template>
-                                    </slot>
-                                </template>
-                                <template slot="collapse-icon">
-                                    <slot name="collapse-icon"></slot>
-                                </template>
-                                <!-- / selection input cells -->
-                                <!-- default rows rows -->
-                                <template
-                                    slot="row-td"
-                                    slot-scope="{ value, argkey }"
-                                >
-                                    <slot
-                                        name="row-td"
-                                        :row="row"
-                                        :value="value"
-                                        :argkey="argkey"
-                                    ></slot>
-                                </template>
-                                <template
-                                    v-for="(td, key) in row.formatedRow"
-                                    :slot="'row-td.' + key"
-                                    slot-scope="{ value }"
-                                >
-                                    <slot
-                                        :name="'row-td.' + key"
-                                        :value="value"
-                                        :row="row"
-                                    ></slot>
-                                </template>
-                                <!-- / default rows rows -->
-                            </a-v-datatable-body-row>
-                            <td
-                                colspan="100%"
-                                v-if="row.row[collapseOptoins.label]"
-                                :key="'collapse-tr-' + index"
+                                <slot
+                                    name="row-td"
+                                    :row="row"
+                                    :value="value"
+                                    :argkey="argkey"
+                                ></slot>
+                            </template>
+                            <template
+                                v-for="(td, key) in row.formatedRow"
+                                :slot="'row-td.' + key"
+                                slot-scope="{ value }"
                             >
-                                <transition name="slide">
-                                    <div
-                                        class="collapse-tr"
-                                        v-if="
-                                            collapseOptoins.enable &&
-                                                row.row[
-                                                    collapseOptoins.label
-                                                ] &&
-                                                row.open
+                                <slot
+                                    :name="'row-td.' + key"
+                                    :value="value"
+                                    :row="row"
+                                ></slot>
+                            </template>
+                            <!-- / default rows rows -->
+                        </a-v-datatable-body-row>
+                        <td
+                            colspan="100%"
+                            v-if="row.row[collapseOptoins.label]"
+                            :key="'collapse-tr-' + index"
+                        >
+                            <transition name="slide">
+                                <div
+                                    class="collapse-tr"
+                                    v-if="
+                                        collapseOptoins.enable &&
+                                            row.row[collapseOptoins.label] &&
+                                            row.open
+                                    "
+                                >
+                                    <a-v-datatable
+                                        :headers="collapseOptoins.headers"
+                                        :headerOptions="headerOptions"
+                                        :items="row.row[collapseOptoins.label]"
+                                        :key="row.id"
+                                        :selectOptions="selectOptions"
+                                        :classes="classes"
+                                        :ref="
+                                            'sub-table_row' + row.row[uniqueId]
                                         "
+                                        :uniqueId="collapseOptoins.uniqueId"
+                                        :reduce="reduce"
+                                        :value="
+                                            value.findIndex
+                                                ? value
+                                                : value[row.row[uniqueId]]
+                                        "
+                                        @input="
+                                            value.findIndex
+                                                ? (value = $event)
+                                                : $set(
+                                                      value,
+                                                      row.row[uniqueId],
+                                                      $event
+                                                  )
+                                        "
+                                        @details="details"
+                                        :isChild="true"
                                     >
-                                        <a-v-datatable
-                                            :headers="collapseOptoins.headers"
-                                            :headerOptions="headerOptions"
-                                            :items="
-                                                row.row[collapseOptoins.label]
-                                            "
-                                            :key="row.id"
-                                            :selectOptions="selectOptions"
-                                            :classes="classes"
-                                            :ref="
-                                                'sub-table_row' +
-                                                    row.row[uniqueId]
-                                            "
-                                            :uniqueId="collapseOptoins.uniqueId"
-                                            :reduce="reduce"
-                                            :value="
-                                                value.findIndex
-                                                    ? value
-                                                    : value[row.row[uniqueId]]
-                                            "
-                                            @input="
-                                                value.findIndex
-                                                    ? (value = $event)
-                                                    : $set(
-                                                          value,
-                                                          row.row[uniqueId],
-                                                          $event
-                                                      )
-                                            "
-                                            @details="details"
-                                            :isChild="true"
-                                        >
-                                            <!-- headers slots -->
-                                            <template slot="header">
-                                                <slot
-                                                    :name="
-                                                        collapseOptoins.label +
-                                                            '.header'
-                                                    "
-                                                >
-                                                </slot>
-                                            </template>
-                                            <template
-                                                slot="header-th"
-                                                slot-scope="{ th }"
-                                            >
-                                                <slot
-                                                    :name="
-                                                        collapseOptoins.label +
-                                                            '.header-th'
-                                                    "
-                                                    :th="th"
-                                                ></slot>
-                                            </template>
-                                            <template
-                                                v-for="th in collapseOptoins.headers"
-                                                :slot="
-                                                    'header-th.' +
-                                                        th[headerOptions.value]
+                                        <!-- headers slots -->
+                                        <template slot="header">
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        '.header'
                                                 "
                                             >
-                                                <slot
-                                                    :name="
-                                                        collapseOptoins.label +
-                                                            '.header-th.' +
-                                                            th[
-                                                                headerOptions
-                                                                    .value
-                                                            ]
-                                                    "
-                                                    :th="th"
-                                                    :label="
-                                                        th[headerOptions.label]
-                                                    "
-                                                ></slot>
-                                            </template>
-                                            <template slot="body">
-                                                <slot
-                                                    :name="
-                                                        collapseOptoins.label +
-                                                            'body'
-                                                    "
-                                                >
-                                                </slot>
-                                            </template>
-                                            <!-- body slots -->
-                                            <!-- selection input cells -->
-                                            <template
-                                                slot="header-select-input"
+                                            </slot>
+                                        </template>
+                                        <template slot="header-select-input">
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        'header-select-input'
+                                                "
+                                            ></slot>
+                                        </template>
+                                        <template
+                                            slot="header-th"
+                                            slot-scope="{ th }"
+                                        >
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        '.header-th'
+                                                "
+                                                :th="th"
+                                            ></slot>
+                                        </template>
+                                        <template
+                                            v-for="th in collapseOptoins.headers"
+                                            :slot="
+                                                'header-th.' +
+                                                    th[headerOptions.value]
+                                            "
+                                        >
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        '.header-th.' +
+                                                        th[headerOptions.value]
+                                                "
+                                                :th="th"
+                                                :label="th[headerOptions.label]"
+                                            ></slot>
+                                        </template>
+                                        <template slot="body">
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        'body'
+                                                "
                                             >
-                                                <slot
-                                                    :name="
-                                                        collapseOptoins.label +
-                                                            'header-select-input'
-                                                    "
-                                                ></slot>
-                                            </template>
-                                            <template slot="body-select-input">
-                                                <slot
-                                                    :name="
-                                                        collapseOptoins.label +
-                                                            'body-select-input'
-                                                    "
-                                                    :row="row"
-                                                ></slot>
-                                            </template>
-                                            <template slot="collapse-icon">
-                                                <slot
-                                                    :name="
-                                                        collapseOptoins.label +
-                                                            'collapse-icon'
-                                                    "
-                                                ></slot>
-                                            </template>
-                                            <!-- / selection input cells -->
-                                            <!-- default rows rows -->
-                                            <template
-                                                slot="row-td"
-                                                slot-scope="{ value, argkey }"
-                                            >
-                                                <slot
-                                                    :name="
-                                                        collapseOptoins.label +
-                                                            'row-td'
-                                                    "
-                                                    :row="row"
-                                                    :value="value"
-                                                    :argkey="argkey"
-                                                ></slot>
-                                            </template>
-                                            <template
-                                                v-for="td in collapseOptoins.headers"
-                                                :slot="'row-td.' + td.value"
-                                                slot-scope="{ value }"
-                                            >
-                                                <slot
-                                                    :name="
-                                                        collapseOptoins.label +
-                                                            '.row-td.' +
-                                                            td.value
-                                                    "
-                                                    :value="value"
-                                                    :row="row"
-                                                ></slot>
-                                            </template>
-                                            <!-- / default rows rows -->
-                                        </a-v-datatable>
-                                    </div>
-                                </transition>
-                            </td>
-                        </template>
-                    </slot>
+                                            </slot>
+                                        </template>
+                                        <!-- body slots -->
+                                        <!-- selection input cells -->
+                                        <template slot="header-select-input">
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        'header-select-input'
+                                                "
+                                            ></slot>
+                                        </template>
+                                        <template slot="body-select-input">
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        'body-select-input'
+                                                "
+                                                :row="row"
+                                            ></slot>
+                                        </template>
+                                        <template slot="collapse-icon">
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        'collapse-icon'
+                                                "
+                                            ></slot>
+                                        </template>
+                                        <!-- / selection input cells -->
+                                        <!-- default rows rows -->
+                                        <template
+                                            slot="row-td"
+                                            slot-scope="{ value, argkey }"
+                                        >
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        'row-td'
+                                                "
+                                                :row="row"
+                                                :value="value"
+                                                :argkey="argkey"
+                                            ></slot>
+                                        </template>
+                                        <template
+                                            v-for="td in collapseOptoins.headers"
+                                            :slot="'row-td.' + td.value"
+                                            slot-scope="{ value }"
+                                        >
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        '.row-td.' +
+                                                        td.value
+                                                "
+                                                :value="value"
+                                                :row="row"
+                                            ></slot>
+                                        </template>
+                                        <!-- / default rows rows -->
+                                    </a-v-datatable>
+                                </div>
+                            </transition>
+                        </td>
+                    </template>
                 </tbody>
                 <caption v-else>
                     <slot name="empty">
@@ -378,24 +353,27 @@ export default {
         rows: null
     }),
     created() {
-        const props = this.$props;
-        // set default headers value if no collapse option headers was implement
-        collapseOptoinsDefault.headers = props.headers;
-
-        // combine default props with enterd props
-        getPropsObj(props.headerOptions, headerOptionsDefault);
-        getPropsObj(props.selectOptions, selectOptionsDefault);
-        getPropsObj(props.collapseOptoins, collapseOptoinsDefault);
-
-        this.rows = props.items.map(row => {
-            const { obj, selected } = createRow(row, props);
-            if (selected) {
-                this.headerStatus++;
-            }
-            return obj;
-        });
+        this.init();
     },
     methods: {
+        init() {
+            const props = this.$props;
+            // set default headers value if no collapse option headers was implement
+            collapseOptoinsDefault.headers = props.headers;
+
+            // combine default props with enterd props
+            getPropsObj(props.headerOptions, headerOptionsDefault);
+            getPropsObj(props.selectOptions, selectOptionsDefault);
+            getPropsObj(props.collapseOptoins, collapseOptoinsDefault);
+
+            this.rows = props.items.map(row => {
+                const { obj, selected } = createRow(row, props);
+                if (selected) {
+                    this.headerStatus++;
+                }
+                return obj;
+            });
+        },
         changeHeaderCheckbox(rows, val) {
             rows.forEach(row => {
                 row[this.selectOptions.label] = val;

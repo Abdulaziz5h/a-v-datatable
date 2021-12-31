@@ -14,6 +14,7 @@
                 v-model="selected"
                 :collapseOptoins="collapseOptoins"
                 :selectOptions="selectOptions"
+                @input="log"
             >
                 <!-- :reduce="item => item.id" -->
                 <!-- 
