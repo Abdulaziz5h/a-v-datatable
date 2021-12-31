@@ -27,12 +27,12 @@
                     :details="details"
                     :row="row"
                 >
-                    <slot name="remove" :remove="remove">
+                    <slot name="remove" :row="row" :remove="remove">
                         <button @click="remove" style="margin-right: 4px">
                             X
                         </button>
                     </slot>
-                    <slot name="details" :details="details">
+                    <slot name="details" :row="row" :details="details">
                         <button @click="details">
                             D
                         </button>

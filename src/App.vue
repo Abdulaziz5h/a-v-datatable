@@ -12,16 +12,21 @@
                 :items="items"
                 classes="borderd cell-borderd striped"
                 v-model="selected"
-                :collapseOptoins="collapseOptoins"
                 :selectOptions="selectOptions"
-                @input="log"
+                :collapseOptoins="collapseOptoins"
+                @details="log"
             >
-                <!-- :reduce="item => item.id" -->
+                <template
+                    slot="cars.header-select-input"
+                    slot-scope="{ check }"
+                >
+                    <button @click="check">c</button>
+                </template>
                 <!-- 
+                :reduce="item => item.id"
                 :headerOptions="headerOptions"
                 ref="table"
                 @remove="log"
-                @details="log"
                 @update="log"
                 @lostId="log" -->
                 <!-- select1 => :reduce="(item) => item.id" -->

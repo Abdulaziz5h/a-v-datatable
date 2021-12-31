@@ -4,7 +4,7 @@
             class="selection"
             v-if="selectOptions.enable && !collapseOptoins.enable"
         >
-            <slot name="header-select-input">
+            <slot name="header-select-input" :check="check">
                 <div class="checkbox-container">
                     <input type="checkbox" v-model="selectAll" />
                     <span class="bar" v-if="!headerStatus"></span>
@@ -38,6 +38,11 @@ export default {
         // to prevent file selectAll watcher
         flag: true
     }),
+    methods: {
+        check() {
+            this.selectAll = !this.selectAll;
+        }
+    },
     watch: {
         selectAll(val) {
             if (this.flag) this.$emit("changeHeaderCheckbox", val);

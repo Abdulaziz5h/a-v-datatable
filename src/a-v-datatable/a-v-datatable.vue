@@ -14,8 +14,8 @@
                         !headerStatus ? -1 : headerStatus == rows.length ? 1 : 0
                     "
                 >
-                    <template slot="header-select-input">
-                        <slot name="header-select-input"></slot>
+                    <template slot="header-select-input" slot-scope="{ check }">
+                        <slot name="header-select-input" :check="check"></slot>
                     </template>
                     <template slot="header-th" slot-scope="{ th }">
                         <slot name="header-th" :th="th"></slot>
@@ -66,22 +66,25 @@
                                     :row="row"
                                 ></slot>
                             </template>
-                            <template slot="remove" slot-scope="{ remove }">
+                            <template
+                                slot="remove"
+                                slot-scope="{ row, remove }"
+                            >
                                 <slot
                                     name="remove"
                                     :remove="remove"
-                                    :row="tr"
+                                    :row="row"
                                 ></slot>
                             </template>
-                            <template slot="details" slot-scope="{ details }">
+                            <template
+                                slot="details"
+                                slot-scope="{ row, details }"
+                            >
                                 <slot
                                     name="details"
                                     :details="details"
-                                    :row="tr"
+                                    :row="row"
                                 ></slot>
-                            </template>
-                            <template slot="collapse-icon">
-                                <slot name="collapse-icon"></slot>
                             </template>
                             <!-- / selection input cells -->
                             <!-- default rows rows -->
@@ -106,6 +109,9 @@
                                     :value="value"
                                     :row="row"
                                 ></slot>
+                            </template>
+                            <template slot="collapse-icon">
+                                <slot name="collapse-icon"></slot>
                             </template>
                             <!-- / default rows rows -->
                         </a-v-datatable-body-row>
@@ -153,6 +159,18 @@
                                         :isChild="true"
                                     >
                                         <!-- headers slots -->
+                                        <template
+                                            slot="header-select-input"
+                                            slot-scope="{ check }"
+                                        >
+                                            <slot
+                                                :name="
+                                                    collapseOptoins.label +
+                                                        '.header-select-input'
+                                                "
+                                                :check="check"
+                                            ></slot>
+                                        </template>
                                         <template
                                             slot="header-th"
                                             slot-scope="{ th }"
