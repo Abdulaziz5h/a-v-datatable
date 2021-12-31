@@ -73,6 +73,7 @@
                 </div>
             </slot>
         </td>
+        <td v-else-if="collapseOptoins.enable"></td>
     </tr>
 </template>
 
