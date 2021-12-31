@@ -25,7 +25,7 @@
                     name="row-td.actions"
                     :remove="remove"
                     :details="details"
-                    :tr="row"
+                    :row="row"
                 >
                     <slot name="remove" :remove="remove">
                         <button @click="remove" style="margin-right: 4px">
