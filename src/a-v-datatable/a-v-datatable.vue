@@ -294,7 +294,7 @@
                                         </template>
                                         <template
                                             slot="remove"
-                                            slot-scope="{ remove }"
+                                            slot-scope="{ row, remove }"
                                         >
                                             <slot
                                                 :name="
@@ -302,12 +302,12 @@
                                                         '.remove'
                                                 "
                                                 :remove="remove"
-                                                :row="tr"
+                                                :row="row"
                                             ></slot>
                                         </template>
                                         <template
                                             slot="details"
-                                            slot-scope="{ details }"
+                                            slot-scope="{ row, details }"
                                         >
                                             <slot
                                                 :name="
@@ -315,7 +315,7 @@
                                                         '.details'
                                                 "
                                                 :details="details"
-                                                :row="tr"
+                                                :row="row"
                                             ></slot>
                                         </template>
                                         <!-- / default rows rows -->
