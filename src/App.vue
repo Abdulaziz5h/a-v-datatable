@@ -14,6 +14,7 @@
                 v-model="selected"
                 :selectOptions="selectOptions"
                 :collapseOptoins="collapseOptoins"
+                :paginationOptions="{ enable: true }"
                 @details="log"
             >
                 <!-- 

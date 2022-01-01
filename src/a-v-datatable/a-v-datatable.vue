@@ -41,7 +41,12 @@
             </thead>
             <transition name="slide">
                 <tbody v-if="rows && rows.length" class="vc__table__tbody">
-                    <template v-for="(row, index) in rows">
+                    <template
+                        v-for="(row, index) in !$attrs.isChild &&
+                        paginationOptions.enable
+                            ? activeRow
+                            : rows"
+                    >
                         <a-v-datatable-body-row
                             :headerOptions="headerOptions"
                             :row="row"
@@ -331,18 +336,70 @@
                     </slot>
                 </caption>
             </transition>
-            <slot name="footer"></slot>
+            <tfoot>
+                <td
+                    colspan="100%"
+                    v-if="!$attrs.isChild && paginationOptions.enable"
+                >
+                    <div class="pagination">
+                        <slot name="pagination">
+                            <a-pagination
+                                :pageLength="paginationOptions.pageLength"
+                                :items="rows"
+                                v-model="activeRow"
+                            >
+                                <template
+                                    slot="pagination"
+                                    slot-scope="{
+                                        updatePagination,
+                                        activePage
+                                    }"
+                                >
+                                    <slot
+                                        name="pagination"
+                                        :updatePagination="updatePagination"
+                                        :activePage="activePage"
+                                    ></slot>
+                                </template>
+                                <template slot="page" slot-scope="{ page }">
+                                    <slot name="page" :page="page"></slot>
+                                </template>
+                                <template
+                                    slot="page-prev"
+                                    slot-scope="{ page }"
+                                >
+                                    <slot name="page-prev" :page="page"></slot>
+                                </template>
+                                <template
+                                    slot="page-next"
+                                    slot-scope="{ page }"
+                                >
+                                    <slot name="page-next" :page="page"></slot>
+                                </template>
+                            </a-pagination>
+                        </slot>
+                    </div>
+                    <div>
+                        <slot name="footer"></slot>
+                    </div>
+                </td>
+            </tfoot>
         </table>
     </div>
 </template>
 <script>
 import aVDatatableHeaderRow from "./a-v-datatable-components/a-v-datatable-header-row";
 import aVDatatableBodyRow from "./a-v-datatable-components/a-v-datatable-body-row.vue";
+import aPagination from "./a-pagination";
 
 // getPropsObj this func combine props
 import { getPropsObj, createRow, warnIndexNotFound } from "@/utils";
 
 // default props
+const paginationOptionsDefault = {
+    enable: false,
+    pageLength: 10
+};
 const headerOptionsDefault = { label: "label", value: "value" };
 const selectOptionsDefault = {
     enable: false,
@@ -361,7 +418,8 @@ export default {
     name: "a-v-datatable",
     components: {
         aVDatatableHeaderRow,
-        aVDatatableBodyRow
+        aVDatatableBodyRow,
+        aPagination
     },
     props: {
         // table header row
@@ -390,6 +448,10 @@ export default {
             type: Object,
             default: () => selectOptionsDefault
         },
+        paginationOptions: {
+            type: Object,
+            default: () => paginationOptionsDefault
+        },
         value: {
             type: null,
             default: () => []
@@ -412,7 +474,8 @@ export default {
     },
     data: () => ({
         headerStatus: 0,
-        rows: null
+        rows: [],
+        activeRow: []
     }),
     created() {
         this.init();
@@ -427,6 +490,7 @@ export default {
             getPropsObj(props.headerOptions, headerOptionsDefault);
             getPropsObj(props.selectOptions, selectOptionsDefault);
             getPropsObj(props.collapseOptoins, collapseOptoinsDefault);
+            getPropsObj(props.paginationOptions, paginationOptionsDefault);
 
             this.rows = props.items.map(row => {
                 const { obj, selected } = createRow(row, props);
