@@ -1,5 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
+// TODO: fix ... on pagination 5
 // TODO: reset header checkbox on collapse close
 // TODO: fix on change select from out of component
 // TODO: add column alignment attrebute at the header obj

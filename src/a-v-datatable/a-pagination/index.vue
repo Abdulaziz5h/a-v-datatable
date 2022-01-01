@@ -5,6 +5,7 @@
                 name="pagination"
                 :updatePagination="updatePagination"
                 :activePage="activePage"
+                :length="Math.ceil(items.length / pageLength)"
             >
                 <li
                     class="page-item page-prev"
@@ -19,7 +20,9 @@
                     <span :key="i">
                         <li
                             v-if="
-                                page == Math.ceil(items.length / pageLength) &&
+                                Math.ceil(items.length / pageLength) > 4 &&
+                                    page ==
+                                        Math.ceil(items.length / pageLength) &&
                                     activePage <=
                                         Math.ceil(items.length / pageLength) - 3
                             "
@@ -28,7 +31,8 @@
                         </li>
                         <li
                             v-if="
-                                page == 1 ||
+                                Math.ceil(items.length / pageLength) <= 4 ||
+                                    page == 1 ||
                                     (page > activePage - 2 &&
                                         page <
                                             activePage +
@@ -40,9 +44,20 @@
                             :class="{ 'page-active': activePage == page }"
                             @click="updatePagination(page)"
                         >
-                            <slot name="page" :page="page">{{ page }}</slot>
+                            <slot
+                                name="page"
+                                :page="page"
+                                :activePage="activePage"
+                                >{{ page }}</slot
+                            >
                         </li>
-                        <li v-if="page == 1 && activePage >= 4">
+                        <li
+                            v-if="
+                                Math.ceil(items.length / pageLength) > 4 &&
+                                    page == 1 &&
+                                    activePage >= 4
+                            "
+                        >
                             ...
                         </li>
                     </span>
@@ -86,6 +101,9 @@
             opacity: 0.6;
             background: #d8d6de;
         }
+    }
+    li:not(.page-item) {
+        cursor: default;
     }
 }
 </style>

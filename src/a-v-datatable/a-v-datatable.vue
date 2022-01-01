@@ -352,17 +352,26 @@
                                     slot="pagination"
                                     slot-scope="{
                                         updatePagination,
-                                        activePage
+                                        activePage,
+                                        length
                                     }"
                                 >
                                     <slot
                                         name="pagination"
                                         :updatePagination="updatePagination"
                                         :activePage="activePage"
+                                        :length="length"
                                     ></slot>
                                 </template>
-                                <template slot="page" slot-scope="{ page }">
-                                    <slot name="page" :page="page"></slot>
+                                <template
+                                    slot="page"
+                                    slot-scope="{ page, activePage }"
+                                >
+                                    <slot
+                                        name="page"
+                                        :activePage="activePage"
+                                        :page="page"
+                                    ></slot>
                                 </template>
                                 <template
                                     slot="page-prev"
