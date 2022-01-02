@@ -15,12 +15,12 @@
                 :selectOptions="selectOptions"
                 :collapseOptoins="collapseOptoins"
                 :paginationOptions="{ enable: true }"
+                ref="table"
                 @details="log"
             >
                 <!-- 
                 :reduce="item => item.id"
                 :headerOptions="headerOptions"
-                ref="table"
                 @remove="log"
                 @update="log"
                 @lostId="log" -->
@@ -182,9 +182,9 @@ export default {
         }
     },
     watch: {
-        selected(s) {
-            console.log(s);
-        }
+        // selected(s) {
+        //     // console.log(s);
+        // }
     }
 };
 </script>

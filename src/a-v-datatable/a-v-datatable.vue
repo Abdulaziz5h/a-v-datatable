@@ -339,7 +339,11 @@
             <tfoot>
                 <td
                     colspan="100%"
-                    v-if="!$attrs.isChild && paginationOptions.enable"
+                    v-if="
+                        !$attrs.isChild &&
+                            paginationOptions.enable &&
+                            rows.length
+                    "
                 >
                     <div class="pagination">
                         <slot name="pagination">
@@ -648,6 +652,12 @@ export default {
                             r => r[this.collapseOptoins.uniqueId] == id
                         );
                         if (itemIndex != -1) {
+                            this.changeCheckbox(
+                                this.items[index][this.collapseOptoins.label][
+                                    itemIndex
+                                ],
+                                false
+                            );
                             this.items[index][
                                 this.collapseOptoins.label
                             ].splice(itemIndex, 1);
@@ -665,6 +675,13 @@ export default {
                     row => row.row[this.uniqueId] == id
                 );
                 if (index != -1) {
+                    this.rows[index].row[this.collapseOptoins.label] &&
+                        this.rows[index].row[
+                            this.collapseOptoins.label
+                        ].forEach(r => {
+                            this.changeCheckbox({ row: r }, false);
+                        });
+                    this.changeCheckbox(this.rows[index], false);
                     this.$emit("remove", this.rows[index]);
                     this.rows.splice(index, 1);
                     this.items.splice(index, 1);
