@@ -1,6 +1,6 @@
 # a-v-datatable
 ## What is a-v-datatable?
-a-v datatable is a vue component built with [Vue](https://vuejs.org/) to make work with tables easer and faster.
+a-v datatable is a [Vue](https://vuejs.org/) component built to make work with tables easer and faster.
 ### [Demo](https://abdulaziz5h.github.io/a-v-datatable-docs/#/documentation/examples/basic)
 
 ## Why a-v-datatable?
