@@ -19,7 +19,7 @@ import "a-v-datatable/dist/a-v-datatable.css"
 
 Vue.use(aVDatatable)
 ```
-### Global implementation
+### Local implementation
 ```vue
 <script>
 import { aVDatatable } from "a-v-datatable"
