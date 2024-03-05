@@ -2,7 +2,7 @@
   <tr class="vc__table__tr vc__thead__tr">
     <th
       class="selection"
-      v-if="(!isChild && selectOptions.enable) || (isChild && collapseOptions.selectOptions.enable)"
+      v-if="selectOptions.enable"
     >
       <slot name="header-select-input" :row="row" :check="check">
         <div class="checkbox-container">

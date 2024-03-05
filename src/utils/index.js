@@ -7,7 +7,7 @@ export function getPropsObj(propName, propNameDefault) {
       Object.assign(propName, { [defKey]: propNameDefault[defKey] });
   });
 }
-export function createRow(row, props) {
+export function createRow(row, props, isChild = false) {
   const formattedRow = {};
   props.headers.forEach((head) => {
     Object.assign(formattedRow, {
@@ -22,11 +22,11 @@ export function createRow(row, props) {
     /* TODO: check selected attribute
             be aware this selected attribute will not change after get its value to push it to the value array or not 
         */
-    [props.selectOptions.label]: !props.value.findIndex
+    [props.selectOptions.label]: !props.value[isChild ? 'selectedChildren' : 'selected'].findIndex
       ? false
-      : props.value.findIndex((val) => {
-          if (props.reduce(row) != null) {
-            return isEqual(props.reduce(row), val);
+      : props.value[isChild ? 'selectedChildren' : 'selected'].findIndex((val) => {
+          if (props.selectOptions.reduce(row) != null) {
+            return isEqual(props.selectOptions.reduce(row), val);
           } else {
             return isEqual(row, val);
           }

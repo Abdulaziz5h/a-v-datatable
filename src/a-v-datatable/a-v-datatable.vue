@@ -13,7 +13,6 @@
           :headerStatus="
             !headerStatus ? -1 : headerStatus == rows.length ? 1 : 0
           "
-          :isChild="$attrs.isChild"
         >
           <template slot="header-select-input" slot-scope="{ row, check }">
             <slot name="header-select-input" :row="row" :check="check"></slot>
@@ -118,16 +117,23 @@
                     :headerOptions="headerOptions"
                     :items="row.row[collapseOptions.label]"
                     :key="row.id"
-                    :selectOptions="selectOptions"
+                    :selectOptions="collapseOptions.selectOptions"
                     :classes="classes"
                     :ref="'sub-table_row' + row.row[uniqueId]"
                     :uniqueId="collapseOptions.uniqueId"
-                    :reduce="reduce"
-                    :value="_value.findIndex ? _value : _value[row.row[uniqueId]]"
+                    :value="
+                      _value.selectedChildren.findIndex
+                        ? _value.selectedChildren
+                        : _value.selectedChildren[row.row[uniqueId]]
+                    "
                     @input="
-                      _value.findIndex
-                        ? (_value = $event)
-                        : $set(_value, row.row[uniqueId], $event)
+                      _value.selectedChildren.findIndex
+                        ? (_value.selectedChildren = $event.selectedChildren)
+                        : $set(
+                            _value.selectedChildren,
+                            row.row[uniqueId],
+                            $event.selectedChildren
+                          )
                     "
                     @details="details"
                     :isChild="true"
@@ -303,13 +309,14 @@ const headerOptionsDefault = { label: "label", value: "value" };
 const selectOptionsDefault = {
   enable: false,
   label: "selected",
+  reduce: () => null,
 };
 const collapseOptionsDefault = {
   enable: false,
   label: "children",
   uniqueId: "id",
   headers: [],
-  selectOptions: selectOptionsDefault
+  selectOptions: selectOptionsDefault,
 };
 
 import { isEqual } from "lodash";
@@ -354,11 +361,10 @@ export default {
     },
     value: {
       type: null,
-      default: () => [],
-    },
-    reduce: {
-      type: Function,
-      default: () => null,
+      default: () => ({
+        selected: [],
+        selectedChildren: [],
+      }),
     },
 
     // Collapse Options
@@ -377,7 +383,10 @@ export default {
     rows: [],
     activeRow: [],
     _items: [],
-    _value: [],
+    _value: {
+      selected: [],
+      selectedChildren: {},
+    },
   }),
   created() {
     this.init();
@@ -389,7 +398,8 @@ export default {
       this._value = props.value;
       // set default headers value if no collapse option headers was implement
       collapseOptionsDefault.headers = props.headers;
-      collapseOptionsDefault.selectOptions = props.collapseOptions.selectOptions;
+      collapseOptionsDefault.selectOptions =
+        props.collapseOptions.selectOptions;
 
       // combine default props with entered props
       getPropsObj(props.headerOptions, headerOptionsDefault);
@@ -398,7 +408,7 @@ export default {
       getPropsObj(props.paginationOptions, paginationOptionsDefault);
 
       this.rows = this._items.map((row) => {
-        const { obj, selected } = createRow(row, props);
+        const { obj, selected } = createRow(row, props, this.$attrs.isChild);
         if (selected) {
           this.headerStatus++;
         }
@@ -412,40 +422,57 @@ export default {
       });
     },
     changeCheckbox(row, is) {
-      const index = this._value.findIndex((val) => {
-        if (this.reduce(row.row) != null) {
-          return isEqual(this.reduce(row.row), val);
+      const isChild = this.$attrs.isChild;
+      const index = this._value[
+        isChild ? "selectedChildren" : "selected"
+      ].findIndex((val) => {
+        if (this.selectOptions.reduce(row.row) != null) {
+          return isEqual(this.selectOptions.reduce(row.row), val);
         } else {
           return isEqual(row.row, val);
         }
       });
       if (is === undefined) {
         if (index != -1) {
-          this._value.splice(index, 1);
+          this._value[isChild ? "selectedChildren" : "selected"].splice(
+            index,
+            1
+          );
           this.headerStatus--;
         } else {
-          if (this.reduce(row.row) != null) {
-            this._value.unshift(this.reduce(row.row));
+          if (this.selectOptions.reduce(row.row) != null) {
+            this._value[isChild ? "selectedChildren" : "selected"].unshift(
+              this.selectOptions.reduce(row.row)
+            );
           } else {
-            this._value.unshift(row.row);
+            this._value[isChild ? "selectedChildren" : "selected"].unshift(
+              row.row
+            );
           }
           this.headerStatus++;
         }
       } else if (is) {
         if (index == -1) {
-          if (this.reduce(row.row) != null) {
+          if (this.selectOptions.reduce(row.row) != null) {
             // eslint-disable-next-line vue/no-mutating-props
-            this._value.unshift(this.reduce(row.row));
+            this._value[isChild ? "selectedChildren" : "selected"].unshift(
+              this.selectOptions.reduce(row.row)
+            );
           } else {
             // eslint-disable-next-line vue/no-mutating-props
-            this._value.unshift(row.row);
+            this._value[isChild ? "selectedChildren" : "selected"].unshift(
+              row.row
+            );
           }
           this.headerStatus++;
         }
       } else {
         if (index != -1) {
           // eslint-disable-next-line vue/no-mutating-props
-          this._value.splice(index, 1);
+          this._value[isChild ? "selectedChildren" : "selected"].splice(
+            index,
+            1
+          );
           this.headerStatus--;
         }
       }
@@ -467,7 +494,11 @@ export default {
           warnIndexNotFound(parentId);
         }
       } else {
-        const { obj, selected } = createRow(row, this.$props);
+        const { obj, selected } = createRow(
+          row,
+          this.$props,
+          this.$attrs.isChild
+        );
         if (selected) {
           this.headerStatus++;
         }
@@ -510,7 +541,7 @@ export default {
           } else {
             newRow = row;
           }
-          const { obj } = createRow(newRow, this.$props);
+          const { obj } = createRow(newRow, this.$props, this.$attrs.isChild);
           Object.assign(this.rows[index], obj);
           Object.assign(this._items[index], obj.row);
 

@@ -1,9 +1,6 @@
 <template>
   <tr class="vc__table__tr vc__tbody__tr">
-    <td
-      v-if="(!isChild && selectOptions.enable) || (isChild && collapseOptions.selectOptions.enable)"
-      class="selection"
-    >
+    <td v-if="selectOptions.enable" class="selection">
       <slot name="body-select-input" :row="row" :check="check">
         <div class="selection-container">
           <!-- eslint-disable vue/no-mutating-props -->
@@ -69,7 +66,6 @@ export default {
     selectOptions: Object,
     collapseOptions: Object,
     isCollapse: Boolean,
-    isChild: Boolean,
   },
   methods: {
     check() {
