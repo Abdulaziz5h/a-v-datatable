@@ -13,9 +13,7 @@
           :headerStatus="
             !headerStatus ? -1 : headerStatus == rows.length ? 1 : 0
           "
-          :items="!$attrs.isChild && paginationOptions.enable
-              ? activeRow
-              : rows"
+          :isChild="$attrs.isChild"
         >
           <template slot="header-select-input" slot-scope="{ row, check }">
             <slot name="header-select-input" :row="row" :check="check"></slot>
@@ -55,6 +53,7 @@
               @changeCheckbox="changeCheckbox(row)"
               @remove="remove(row.row[uniqueId])"
               @details="details"
+              :isChild="$attrs.isChild"
             >
               <template slot="body-select-input" slot-scope="{ row, check }">
                 <slot name="body-select-input" :row="row" :check="check">
@@ -310,6 +309,7 @@ const collapseOptionsDefault = {
   label: "children",
   uniqueId: "id",
   headers: [],
+  selectOptions: selectOptionsDefault
 };
 
 import { isEqual } from "lodash";
@@ -389,6 +389,7 @@ export default {
       this._value = props.value;
       // set default headers value if no collapse option headers was implement
       collapseOptionsDefault.headers = props.headers;
+      collapseOptionsDefault.selectOptions = props.collapseOptions.selectOptions;
 
       // combine default props with entered props
       getPropsObj(props.headerOptions, headerOptionsDefault);

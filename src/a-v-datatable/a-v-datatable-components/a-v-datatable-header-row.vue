@@ -2,7 +2,7 @@
   <tr class="vc__table__tr vc__thead__tr">
     <th
       class="selection"
-      v-if="selectOptions.enable && !collapseOptions.enable"
+      v-if="(!isChild && selectOptions.enable) || (isChild && collapseOptions.selectOptions.enable)"
     >
       <slot name="header-select-input" :row="row" :check="check">
         <div class="checkbox-container">
@@ -31,7 +31,7 @@ export default {
     isCollapse: Boolean,
     collapseOptions: Object,
     headerStatus: Number,
-    items: Array,
+    isChild: Boolean,
   },
   data: () => ({
     selectAll: false,

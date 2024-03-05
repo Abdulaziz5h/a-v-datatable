@@ -8,21 +8,21 @@
       <button @click="update()">update</button>
 
       <a-v-datatable :headers="headers" :items="items" classes="bordered cell-bordered striped" v-model="selected"
-        :selectOptions="selectOptions" :collapseOptions="collapseOptions" :paginationOptions="{ enable: true }"
-        ref="table" @details="log">
+      :paginationOptions="{ enable: true }"
+      :collapseOptions="collapseOptions" 
+      ref="table" @details="log">
+      <!-- :selectOptions="selectOptions" -->
         <!-- 
-                :reduce="item => item.id"
-                :headerOptions="headerOptions"
-                @remove="log"
-                @update="log"
-                @lostId="log" -->
+          :headerOptions="headerOptions"
+          @remove="log"
+          @update="log"
+          @lostId="log" -->
         <!-- select1 => :reduce="(item) => item.id" -->
-        <!-- select2 => :reduce="(item) => ({id: item.id, first_name:
-                item.first_name})" -->
+        <!-- select2 => :reduce="(item) => ({id: item.id, first_name: item.first_name})" -->
       </a-v-datatable>
       <pre>
-                {{ selected }}
-            </pre>
+        {{ selected }}
+      </pre>
       <footer class="footer">Developing...</footer>
     </div>
   </div>
@@ -65,6 +65,9 @@ export default {
         enable: true,
         label: "cars",
         headers: subHeaders,
+        selectOptions: {
+          enable: true
+        }
       },
       selected: [],
       // selected: [
