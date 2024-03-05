@@ -13,6 +13,9 @@
           :headerStatus="
             !headerStatus ? -1 : headerStatus == rows.length ? 1 : 0
           "
+          :items="!$attrs.isChild && paginationOptions.enable
+              ? activeRow
+              : rows"
         >
           <template slot="header-select-input" slot-scope="{ row, check }">
             <slot name="header-select-input" :row="row" :check="check"></slot>
@@ -44,7 +47,6 @@
               :row="row"
               :rowIndex="index"
               :selectOptions="selectOptions"
-              :key="row.id"
               :collapseOptions="collapseOptions"
               :isCollapse="collapseOptions.enable"
               :headerStatus="

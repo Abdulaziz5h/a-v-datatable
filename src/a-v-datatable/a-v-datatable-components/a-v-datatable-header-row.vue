@@ -31,6 +31,7 @@ export default {
     isCollapse: Boolean,
     collapseOptions: Object,
     headerStatus: Number,
+    items: Array,
   },
   data: () => ({
     selectAll: false,
@@ -38,16 +39,14 @@ export default {
     // to prevent file selectAll watcher
     flag: true,
   }),
+  created() {
+    this.headerStatusMethod(this.headerStatus);
+  },
   methods: {
     check() {
       this.selectAll = !this.selectAll;
     },
-  },
-  watch: {
-    selectAll(val) {
-      if (this.flag) this.$emit("changeHeaderCheckbox", val);
-    },
-    headerStatus(l) {
+    headerStatusMethod(l) {
       if (l == 1) {
         this.selectAll = true;
       } else {
@@ -58,6 +57,14 @@ export default {
       setTimeout(() => {
         this.flag = true;
       });
+    }
+  },
+  watch: {
+    selectAll(val) {
+      if (this.flag) this.$emit("changeHeaderCheckbox", val);
+    },
+    headerStatus(l) {
+      this.headerStatusMethod(l);
     },
   },
 };

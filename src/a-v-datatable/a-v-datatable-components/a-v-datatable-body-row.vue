@@ -37,7 +37,7 @@
           </slot>
         </slot>
       </td>
-      <td @click="change(row)" :key="index" v-else>
+      <td @click="change(row)" v-else>
         <slot :name="'row-td.' + key" :value="td">
           {{ td }}
         </slot>
