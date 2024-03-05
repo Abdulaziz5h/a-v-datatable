@@ -37,11 +37,11 @@
                     align-items: center;
                 }
             }
-            .colapse-icon {
+            .collapse-icon {
                 width: 36px;
                 min-width: 36px;
                 position: relative;
-                .colapse-icon-i {
+                .collapse-icon-i {
                     height: 100%;
                     width: 100%;
                     // position: absolute;
@@ -58,7 +58,7 @@
                         }
                     }
                 }
-                .colapsed {
+                .collapsed {
                     transform: rotate(180deg);
                 }
             }
@@ -78,7 +78,7 @@
         }
     }
 
-    &.borderd {
+    &.bordered {
         .vc__table {
             border: 1px solid #d8d6de;
             border-bottom: none;
@@ -96,7 +96,7 @@
                 }
             }
         }
-        &.cell-borderd {
+        &.cell-bordered {
             td,
             th {
                 border: 1px solid #d8d6de;

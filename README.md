@@ -40,7 +40,7 @@ export default {
     <a-v-datatable
         :headers="headers"
         :items="users"
-        classes="borderd cell-borderd striped"
+        classes="bordered cell-bordered striped"
     />
 </template>
 <script>

@@ -2,40 +2,39 @@ import { v4 as uuidv4 } from "uuid";
 import { isEqual } from "lodash";
 
 export function getPropsObj(propName, propNameDefault) {
-    Object.keys(propNameDefault).forEach(defKey => {
-        if (!propName[defKey])
-            Object.assign(propName, { [defKey]: propNameDefault[defKey] });
-    });
+  Object.keys(propNameDefault).forEach((defKey) => {
+    if (!propName[defKey])
+      Object.assign(propName, { [defKey]: propNameDefault[defKey] });
+  });
 }
 export function createRow(row, props) {
-    const formatedRow = {};
-    props.headers.forEach(head => {
-        Object.assign(formatedRow, {
-            [head[props.headerOptions.value]]:
-                row[head[props.headerOptions.value]]
-        });
+  const formattedRow = {};
+  props.headers.forEach((head) => {
+    Object.assign(formattedRow, {
+      [head[props.headerOptions.value]]: row[head[props.headerOptions.value]],
     });
-    const obj = {
-        id: uuidv4(),
-        row: { ...row },
-        formatedRow,
-        // TODO: add check if array method
-        /* TODO: check selected attribute
-            be awair this selected atteibute will not chainge after get its value to push it to the value array or not 
+  });
+  const obj = {
+    id: uuidv4(),
+    row: { ...row },
+    formattedRow,
+    // TODO: add check if array method
+    /* TODO: check selected attribute
+            be aware this selected attribute will not change after get its value to push it to the value array or not 
         */
-        [props.selectOptions.label]: !props.value.findIndex
-            ? false
-            : props.value.findIndex(val => {
-                  if (props.reduce(row) != null) {
-                      return isEqual(props.reduce(row), val);
-                  } else {
-                      return isEqual(row, val);
-                  }
-              }) != -1,
-        open: false
-    };
-    return { obj, selected: obj[props.selectOptions.label] };
+    [props.selectOptions.label]: !props.value.findIndex
+      ? false
+      : props.value.findIndex((val) => {
+          if (props.reduce(row) != null) {
+            return isEqual(props.reduce(row), val);
+          } else {
+            return isEqual(row, val);
+          }
+        }) != -1,
+    open: false,
+  };
+  return { obj, selected: obj[props.selectOptions.label] };
 }
 export function warnIndexNotFound(id) {
-    console.warn("item with uniqueId " + id + " is not exist in the array");
+  console.warn("item with uniqueId " + id + " is not exist in the array");
 }
